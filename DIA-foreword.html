@@ -339,6 +339,24 @@
     h2 { font-size: 1.3em; }
   }
 
+
+  .illustration {
+    margin: 24px 0;
+    text-align: center;
+  }
+  .illustration img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 2px 2px 12px var(--shadow);
+  }
+  .illustration .caption {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85em;
+    color: var(--accent2);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
 </style>
 </head>
 <body>
@@ -354,6 +372,11 @@
   서문: 아베르누스로의 하강
   <span class="subtitle">About the Adventure</span>
 </h1>
+<div class="illustration">
+  <img src="00-001.scribe.png" alt="서기관">
+  <div class="caption">서기관</div>
+</div>
+
 
 <!-- Sidebar TOC -->
 <button class="sidebar-toc-toggle" id="tocToggle" onclick="document.getElementById('sidebarToc').classList.toggle('open'); this.classList.toggle('open');">목차</button>
