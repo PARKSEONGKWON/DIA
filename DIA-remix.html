@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>알렉산드리안 리믹스 — The Alexandrian Remix</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #faf6f0;
+    --text: #2c2416;
+    --accent: #8b1a1a;
+    --accent2: #a0522d;
+    --heading: #4a0e0e;
+    --border: #c9b99a;
+    --box-bg: #f0e8d8;
+    --quote-bg: #eee6d4;
+    --table-head: #5c3317;
+    --table-alt: #f5edd9;
+    --shadow: rgba(0,0,0,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Serif KR', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.85;
+    font-size: 16px;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 28px 80px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 900;
+    font-size: 2.4em;
+    color: var(--heading);
+    text-align: center;
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+    border-bottom: 3px double var(--accent);
+    padding-bottom: 16px;
+  }
+
+  h1 .subtitle {
+    display: block;
+    font-size: 0.45em;
+    font-weight: 400;
+    color: var(--accent2);
+    letter-spacing: 0.08em;
+    margin-top: 6px;
+  }
+
+  h2 {
+    font-family: 'Noto Serif KR', serif;
+    font-weight: 700;
+    font-size: 1.6em;
+    color: var(--accent);
+    margin: 48px 0 16px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--border);
+  }
+
+  h3 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: 1.2em;
+    color: var(--heading);
+    margin: 32px 0 10px;
+  }
+
+  h4 {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: 1.05em;
+    color: var(--accent2);
+    margin: 24px 0 8px;
+  }
+
+  p { margin: 0 0 14px; text-align: justify; }
+
+  ul, ol { margin: 0 0 14px 24px; }
+  li { margin-bottom: 6px; }
+
+  .read-aloud {
+    background: var(--quote-bg);
+    border-left: 4px solid var(--accent);
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-style: italic;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .read-aloud p:last-child { margin-bottom: 0; }
+
+  .sidebar {
+    background: var(--box-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    box-shadow: 2px 2px 8px var(--shadow);
+  }
+
+  .sidebar h3 {
+    margin-top: 0;
+    color: var(--accent);
+    font-size: 1.1em;
+  }
+
+  blockquote {
+    background: var(--quote-bg);
+    border-left: 3px solid var(--accent2);
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-style: italic;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.95em;
+  }
+
+  thead th {
+    background: var(--table-head);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+  }
+
+  tbody td {
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  tbody tr:nth-child(even) { background: var(--table-alt); }
+
+  .area-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    font-size: 1.08em;
+    color: var(--accent);
+    margin: 28px 0 8px;
+    scroll-margin-top: 20px;
+  }
+
+  .section-divider {
+    text-align: center;
+    margin: 40px 0;
+    color: var(--border);
+    font-size: 1.4em;
+    letter-spacing: 0.5em;
+  }
+
+  .map-note {
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.9em;
+    color: var(--accent2);
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+  }
+
+  strong { color: var(--heading); }
+
+  /* Compact Chapter Nav */
+  .chapter-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 0 24px;
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+    padding: 8px 0;
+    gap: 8px;
+  }
+  .chapter-nav .nav-btn {
+    padding: 8px 16px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.9em;
+    font-weight: 700;
+    color: var(--accent2);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--box-bg);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+    min-width: 80px;
+    text-align: center;
+  }
+  .chapter-nav .nav-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+  }
+  .chapter-nav .nav-btn.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  .chapter-nav .nav-title {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1em;
+    font-weight: 700;
+    color: var(--heading);
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .chapter-nav .nav-home {
+    padding: 8px 12px;
+    font-size: 1.1em;
+    text-decoration: none;
+    color: var(--accent2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--box-bg);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .chapter-nav .nav-home:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* Sidebar TOC */
+  .sidebar-toc-toggle {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    writing-mode: vertical-rl;
+    letter-spacing: 2px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: 700;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+  }
+  .sidebar-toc-toggle:hover { background: var(--heading); }
+  .sidebar-toc-toggle.open { left: 280px; }
+
+  .sidebar-toc {
+    position: fixed;
+    left: -300px;
+    top: 0;
+    width: 280px;
+    height: 100vh;
+    background: var(--bg);
+    border-right: 2px solid var(--border);
+    box-shadow: 4px 0 12px rgba(0,0,0,0.15);
+    z-index: 199;
+    overflow-y: auto;
+    padding: 60px 16px 20px;
+    transition: left 0.3s ease;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85em;
+  }
+  .sidebar-toc.open { left: 0; }
+  .sidebar-toc h4 {
+    color: var(--accent);
+    margin: 0 0 12px;
+    font-size: 1.1em;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 8px;
+  }
+  .sidebar-toc ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .sidebar-toc li {
+    padding: 3px 0;
+  }
+  .sidebar-toc li.toc-h2 {
+    font-weight: 700;
+    margin-top: 10px;
+    color: var(--heading);
+  }
+  .sidebar-toc li.toc-h3 {
+    padding-left: 14px;
+    font-size: 0.92em;
+  }
+  .sidebar-toc li.toc-h4 {
+    padding-left: 28px;
+    font-size: 0.85em;
+    color: var(--accent2);
+  }
+  .sidebar-toc a {
+    color: var(--text);
+    text-decoration: none;
+    display: block;
+    padding: 2px 4px;
+    border-radius: 3px;
+    transition: background 0.15s;
+  }
+  .sidebar-toc a:hover {
+    background: var(--box-bg);
+    color: var(--accent);
+  }
+  .sidebar-toc .toc-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: var(--accent2);
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 20px 14px 60px; font-size: 15px; }
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.3em; }
+  }
+
+  .illustration {
+    margin: 24px 0;
+    text-align: center;
+  }
+  .illustration img {
+    max-width: 100%;
+    border-radius: 8px;
+    box-shadow: 2px 2px 12px var(--shadow);
+  }
+  .illustration .caption {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 0.85em;
+    color: var(--accent2);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* Lightbox */
+  .illustration img { cursor: zoom-in; }
+  .lightbox-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    cursor: zoom-out;
+    justify-content: center;
+    align-items: center;
+  }
+  .lightbox-overlay.active { display: flex; }
+  .lightbox-overlay img {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: none;
+  }
+  .lightbox-close {
+    position: fixed;
+    top: 16px; right: 20px;
+    color: #fff;
+    font-size: 32px;
+    cursor: pointer;
+    z-index: 1001;
+    background: none;
+    border: none;
+    font-family: sans-serif;
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="chapter-nav">
+  <a href="DIA-home.html" class="nav-home" title="홈">⌂</a>
+  <span class="nav-btn disabled">◀ 이전</span>
+  <span class="nav-title">알렉산드리안 리믹스</span>
+  <span class="nav-btn disabled">다음 ▶</span>
+</nav>
+
+<h1>
+  알렉산드리안 리믹스
+  <span class="subtitle">The Alexandrian Remix</span>
+</h1>
+
+<!-- Sidebar TOC -->
+<button class="sidebar-toc-toggle" id="tocToggle" onclick="document.getElementById('sidebarToc').classList.toggle('open'); this.classList.toggle('open');">목차</button>
+<aside class="sidebar-toc" id="sidebarToc">
+  <button class="toc-close" onclick="document.getElementById('sidebarToc').classList.remove('open'); document.getElementById('tocToggle').classList.remove('open');">✕</button>
+  <h4>리믹스 목차</h4>
+  <ul>
+    <li class="toc-h2"><a href="#premise">전제</a></li>
+    <li class="toc-h2"><a href="#remixing">리믹스하기</a></li>
+    <li class="toc-h2"><a href="#refugees">피난민</a></li>
+    <li class="toc-h3"><a href="#refugee-options">엘투렐에서 발더스 게이트로</a></li>
+    <li class="toc-h3"><a href="#prepping-caravan">캐러밴 준비하기</a></li>
+    <li class="toc-h3"><a href="#running-caravan">캐러밴 운영하기</a></li>
+    <li class="toc-h2"><a href="#at-the-gate">성문에서</a></li>
+    <li class="toc-h3"><a href="#zodge-deal">조지의 거래</a></li>
+    <li class="toc-h3"><a href="#level-up">레벨 업</a></li>
+    <li class="toc-h2"><a href="#mystery">엘투렐 운명의 미스터리</a></li>
+    <li class="toc-h3"><a href="#rumors">엘투렐의 소문</a></li>
+    <li class="toc-h3"><a href="#thavius">타비우스 크리그 확립하기</a></li>
+    <li class="toc-h3"><a href="#solutions">해답</a></li>
+  </ul>
+</aside>
+
+<!-- ============================================================ -->
+
+<p><em>아베르누스로의 하강(Descent Into Avernus)</em>은 PC들이 아무것도 안 하고 서 있는 동안 GM이 NPC의 멋진 활약상을 묘사하는 것으로 시작합니다. 그리고 곧바로 "플레이어들이 시키는 대로 하지 않으면, NPC들이 자동으로 그들을 찾아가서 죽인다"로 이어지죠.</p>
+
+<p>길조로운 시작은 아닙니다.</p>
+
+<!-- ============================================================ -->
+<h2 id="premise">전제(The Premise)</h2>
+
+<p>잠깐 한 발짝 물러서서, 핵심 배경 이야기를 간략히 정리해 봅시다:</p>
+
+<ol>
+<li>140여 년 전, <strong>자리엘(Zariel)</strong>이라는 천사가 도시 국가 <strong>엘투렐(Elturel)</strong>의 성기사들을 설득하여 지옥 자체로 영광스러운 돌격을 감행하게 했습니다.</li>
+<li>이것은 참담하게 끝났습니다: 많은 기사가 원정을 이탈하고 고향으로 도망쳐 문을 닫아버렸습니다. 자리엘 군대의 나머지는 전멸했고, 자리엘 자신은 포로로 잡혔습니다.</li>
+<li>포획된 후, 자리엘은 악으로 유혹당했습니다. <strong>아스모데우스(Asmodeus)</strong>에게 충성을 맹세하며, 그녀는 <strong>아베르누스(Avernus)</strong>의 대악마가 되었습니다. 자신을 배신한 기사들에 대한 증오로 가득 찬 채, 그녀는 멀리서 엘투렐을 지켜보며 복수의 기회를 기다렸습니다.</li>
+<li>한편, 엘투렐로 도망쳐 돌아온 기사들은 반대편에서 벌인 영광스러운 전투에 대해 거짓말을 했고, 그들의 기사단은 <strong>지옥기수단(Hellriders)</strong>으로 알려지게 되었습니다.</li>
+<li>수십 년 후, 엘투렐은 새로운 악에 시달렸습니다: 도시의 고위 감독관이 비밀리에 뱀파이어 군주였던 것입니다. 가장 어두운 시간에, 신 <strong>아마우나토르(Amaunator)</strong>가 거룩한 기도에 응답하여 도시 상공에 <strong>동반자(the Companion)</strong>가 나타났습니다 — 밤에도 타오르며 어떤 언데드도 견딜 수 없는 빛을 내는 제2의 태양이었습니다.</li>
+<li>하지만 이것은 거짓이었습니다: 동반자는 사실 자리엘이 만들어낸 것이었고, 엘투렐의 누군가와 거래를 했습니다(이에 대해서는 나중에 더 자세히 다룹니다). 동반자의 빛 아래, 엘투렐 도시는 지옥 계약에 묶였습니다. 50년이 지나면 도시와 모든 주민의 영혼은 자리엘의 것이 됩니다.</li>
+<li>며칠 전, 그것이 일어났습니다: 엘투렐 도시 전체가 지옥의 첫 번째 층인 <strong>아베르누스</strong>로 끌려갔습니다.</li>
+<li>엘투렐에서 잃어버린 사람들 중에는 <strong>발더스 게이트(Baldur's Gate)</strong>의 통치자인 <strong>대공작 레이븐가드(Grand Duke Ravengard)</strong>도 있었습니다. 외교 사절로 방문 중이었죠.</li>
+<li>재앙을 피해 도망친 피난민들은 <strong>키온타르 강(River Chionthar)</strong>을 따라 발더스 게이트로 향합니다. 도시는 감당할 수 없는 상황이 되어 성문을 닫아버립니다.</li>
+</ol>
+
+<p><em>아베르누스로의 하강</em>은 위기로 인해 PC들이 발더스 게이트의 군사이자 경찰 역할을 수백 년간 해온 용병 경비대 <strong>화염 주먹단(Flaming Fist)</strong>에 징집되어 바실리스크 문(Basilisk Gate)의 <strong>화염 조지(Flame Zodge)</strong>에게 보고하라는 명령을 받았다고 알려주는 한 덩어리의 박스 텍스트로 시작합니다.</p>
+
+<p>(모험에서는 실제로 그를 "조지 대위(Captain Zodge)"라고 부르지만, 화염 주먹단에 대위라는 계급은 없습니다. 화염 주먹단의 계급은: 주먹(Fist), 건틀릿(Gauntlet), 마니프(Manip), 화염(Flame), 블레이즈(Blaze), 원수(Marshal)입니다. 나중에 등장하는 "포르티르 지휘관(Commander Portyr)"도 마찬가지로 실제로는 블레이즈 포르티르 또는 원수 포르티르여야 합니다.)</p>
+
+<p>PC들이 바실리스크 문에 도착하면, GM이 화염 조지가 폭동 한가운데 뛰어들어 적들을 제압하며 멋지게 활약하는 장면을 묘사하는 동안 그냥 서 있기만 합니다. 컷씬이 끝나면, 조지가 PC들에게 다가와서 <strong>죽은 삼신(Dead Three)</strong>(베인, 바알, 미르쿨)을 숭배하는 광신도들이 현재 위기를 틈타 살인 행각을 벌이고 있다고 말합니다. <strong>엘프송 선술집(Elfsong Tavern)</strong>에서 <strong>타리나(Tarina)</strong>라는 정보원을 만나야 한다고요.</p>
+
+<p>PC들이 거부하면, 조지는 그들을 <strong>"즉석에서 처형"</strong>합니다.</p>
+
+<p>임무를 수락하고도 이행하지 않으면, 조지는 병사 분대를 보내 그들을 추적하고 <strong>"가기를 거부하는 자는 모두 죽인다"</strong>고 합니다.</p>
+
+<p>PC들이 도망치면, 조지는 두 개의 분대를 더 보내 그들을 죽입니다.</p>
+
+<!-- ============================================================ -->
+<h2 id="remixing">리믹스하기(Remixing)</h2>
+
+<p>"내 말대로 하지 않으면 캐릭터를 자의적으로 죽이겠다"는 모티프가 문제적인 이유는 꽤 분명하리라 생각합니다. 그런데 <em>아베르누스로의 하강</em>이 여기서 이 패턴을 빠르게 세 번이나 반복한다는 사실은, 사실 더 근본적인 문제에 크고 번쩍이는 화살표를 가리키는 역할을 합니다:</p>
+
+<p><strong>플레이어도, 그들의 캐릭터도, 지금 일어나고 있는 일에 관심을 가질 이유를 전혀 부여받지 못합니다.</strong></p>
+
+<p>기본적으로 여기 있는 것은, 디자이너들 스스로도 신뢰하지 못해서 플레이어 머리에 총을 겨눠야 한다고 느끼는 <strong>고장 난 시나리오 훅</strong>입니다.</p>
+
+<p>그러면 어떻게 고칠 수 있을까요?</p>
+
+<p>제가 <em>Over the Edge</em>의 시나리오 훅 디자인 노트에서 썼듯이, 시나리오 훅은 <strong>구체적</strong>이어야 합니다: PC들을 현재 상황에 끌어들이는 구체적인 것은 무엇인가?</p>
+
+<p>"화염 주먹단에 징집되었다"는 구체적이긴 하지만, 첫 번째 실패는 다음 요건에 있습니다: <strong>플레이어가 훅을 경험해야 한다</strong>는 것입니다. 플레이가 시작되기도 전에 화면 밖에서 PC들이 징집되게 함으로써, <em>아베르누스로의 하강</em>은 플레이어와 훅 사이에 거리를 둡니다. 이렇게 하면 플레이어들이 훅에 대해 덜 신경 쓸 뿐만 아니라, 훅 자체도 덜 기억에 남습니다. 캠페인 전체의 훅에서는 특히 이를 피해야 합니다. 세 네 세션 후에 플레이어들이 이 모든 게 왜 일어나고 있는지 완전히 잊어버리는 건 원치 않으니까요.</p>
+
+<p>이상적으로, PC(와 플레이어)는 훅에 의해 <strong>동기부여</strong>되어야 합니다. 그리고 이 동기부여가 여러분이 원하는 행동과 일치하면 더 좋습니다. (상황(situation)을 설계하지 않고 플롯(plot)을 설계하는 경우라면 덜 중요합니다. 상황 설계에서는 PC들이 실제로 무엇을 하든 상관없고, 단지 상황에 노출시켜서 상호작용할 수 있게 하면 되니까요.)</p>
+
+<p>강제 징집과 살해 위협은 확실히 동기를 부여할 수 있지만, 주로 동기부여하는 것은 <em>그 상황에서 벗어나는 것</em>입니다. <em>아베르누스로의 하강</em>이 임무를 이탈하는 PC들을 추적하는 데 집착하는 이유가 바로 이겁니다: 어느 정도는 살인 사건 수사 동기를 부여하지 못했다는 걸 인식하고 있는 거죠. 실제로 동기부여한 건 화염 주먹단으로부터의 탈출뿐입니다.</p>
+
+<p>(시나리오 훅이 PC들에게 여러 가지 방식으로 동기를 부여하도록 설계하는 것은 성공하기만 하면 정말 최고입니다. 또는 단순히 여러 개의 훅을 같은 방향으로 정렬시키는 방법도 있습니다.)</p>
+
+<p>마지막으로, 최고의 시나리오 훅은 일시적이거나 다음에 일어나는 일과 단절되지 않습니다. 대신 모험뿐만 아니라 캠페인 전체와 주제적으로, 구조적으로, 의미 있게 <strong>계속 울려 퍼집니다</strong>.</p>
+
+<p>이것들이 절대적 규칙은 아닙니다. 하지만 유용한 경험 법칙입니다.</p>
+
+<p>자, 화염 조지나 그가 PC들에게 주는 임무를 완전히 버리고 싶지는 않습니다. (그러려면 캠페인 1막을 훨씬 더 철저히 변형해야 하니까요.) 하지만 우리가 할 일은 캠페인의 도입부를 재구성하여, 지옥의 문까지 우리를 이끌어 갈 훅을 만드는 것입니다.</p>
+
+<!-- ============================================================ -->
+<h2 id="refugees">피난민(Refugees)</h2>
+
+<h3 id="refugee-options">엘투렐에서 발더스 게이트로</h3>
+
+<p><em>아베르누스로의 하강</em>의 핵심 기둥은 <strong>엘투렐</strong>이라는 도시입니다: 무슨 일이 일어났는가? 왜 일어났는가? 어떻게 구할 수 있는가?</p>
+
+<p>모든 것이 이 도시를 중심으로 돌아갑니다... 적어도 그래야 합니다. 실제로는 캠페인, 특히 1막에서 기묘하게 부재합니다. PC들은 엘투렐에 무슨 일이 일어나든 관심을 가져야 하지만, 그래야 할 이유를 전혀 부여받지 못합니다.</p>
+
+<p>여기서 쉬운 해결책은 물론 플레이어들에게 엘투렐 출신이거나 엘투렐과 강한 연결이 있는 캐릭터를 만들게 하는 것입니다. 그것도 괜찮지만, 다시 그 화면 밖 문제에 부딪힙니다: 캐릭터가 엘투렐에 관심이 있다고 <em>말했지만</em>, 실제로 <em>보여주지</em> 않은 것입니다. 그 연결을 테이블로 가져와서 플레이어들이 직접 경험하게 해야 합니다.</p>
+
+<p>이를 위한 방법은 명백합니다: <strong>피난민</strong>입니다.</p>
+
+<p>화염 조지로 모험을 시작하는 대신, PC들이 발더스 게이트로 향하는 <strong>피난민 캐러밴을 호위</strong>하는 것으로 시작합니다. 크게 네 가지 방법이 있습니다:</p>
+
+<h3>인 메디아스 레스(In Media Res)</h3>
+<p>캠페인을 PC들이 이미 피난민들과 함께 발더스 게이트를 향해 길을 가고 있는 장면으로 시작합니다.</p>
+
+<h3>길 위의 피난민(Refugees on the Road)</h3>
+<p>PC들이 키온타르 강을 따라 이동하다가 엘투렐에서 오는 피난민들을 만나기 시작합니다. 한 피난민 무리가 위험에 처하고(아마도 도적의 습격), PC들이 대응해야 합니다. 이후 피난민들은 발더스 게이트까지 호위해 달라고 부탁합니다 — <strong>"거기라면 분명 안전하고 보호받을 수 있을 거예요."</strong></p>
+
+<h3>아슬아슬한 차이(Near Miss)</h3>
+<p>PC들이 엘투렐로 여행 중입니다. 언덕 꼭대기에서 앞에 빛나는 도시가 보입니다. 골짜기를 지나는데 엄청난 천둥소리가 울리고, 다음 언덕 꼭대기에 올라서자 도시가 사라져 버렸습니다! 위기가 시작되는 바로 그 현장에 있는 것입니다.</p>
+
+<h3>재앙의 서막(Prelude to Disaster)</h3>
+<p>PC들이 실제로 엘투렐에 있을 때 하늘 위의 동반자에 무언가 끔찍한 일이 벌어집니다. 검은 번개가 도시의 수호자를 공격하는 것 같습니다! 그러더니 검은 번개가 아래로도 내리치기 시작하여 건물, 거리, 사람들을 강타합니다. 공포가 퍼지고 사람들이 도시에서 도망치기 시작합니다. PC들은 도시가 갑자기 사라지기 직전에 간신히 탈출합니다!</p>
+
+<p>일반적으로 목록 아래로 갈수록 위기는 더 즉각적이고 생생해지지만, PC들이 결국 발더스 게이트로 향하도록 만들기는 더 어려워집니다. 실제로 도시에 있게 하는 것은 굉장하게 들리지만, PC들이 도망가라는 신호를 잡지 못할 위험이 있습니다!</p>
+
+<div class="sidebar">
+<h3>선택지: 인 메디아스 레스 + 플래시백</h3>
+<p>"인 메디아스 레스" 옵션으로 시작하되, 이전 장면으로 플래시백하여 플레이어들이 위기 상황을 실제로 롤플레이하게 합니다 — 생존자 분류, 캐러밴 조직 등. 이 플래시백 장면들을 다양한 '길 위의 위기' 장면들과 번갈아가며 진행할 수 있습니다.</p>
+</div>
+
+<div class="sidebar">
+<h3>선택지: "아슬아슬한 차이" 확장</h3>
+<p>단순히 "아슬아슬한 차이"로 시작하는 대신, 엘투렐을 거점으로 한 완전히 평범한 캠페인인 것처럼 시작합니다. 전형적인 1레벨 퀘스트를 위해 플레이어들을 도시 밖으로 보냅니다. 5 Room Dungeon 같은 간단한 것으로요. (이 던전에 자리엘 숭배의 미묘한 단서나 복선을 포함시킬 수도 있습니다. 리믹스 파트 3 참조.) 엘투렐로 돌아오는 길에 — 쾅! 클리프행어. 세션 종료.</p>
+</div>
+
+<h3 id="prepping-caravan">캐러밴 준비하기(Prepping the Caravan)</h3>
+
+<p>피난민 캐러밴을 마치 <strong>파티(party)</strong>처럼 준비하고 운영하게 됩니다. (자세한 내용은 Party Planning 게임 구조를 참조하세요.) 처음에는 이상하게 들릴 수 있지만, 구조적으로 매우 합리적입니다.</p>
+
+<p><strong>피난민:</strong> 최소 4~6명의 피난민을 준비해야 합니다. 실제로는 10~15명을 추천합니다. Universal Roleplaying Template를 사용하여 이 캐릭터들에 생명을 불어넣으세요. 처음에는 작은 캐러밴으로 시작하여 시간이 지나면서 점점 더 많은 사람들이 모이게 하는 것도 좋습니다. 어느 경우든 준비한 피난민 외에 더 많은 피난민이 있을 수 있지만, 준비한 캐릭터들이 PC들이 가장 많이 상호작용하는 위기의 "얼굴"이 됩니다.</p>
+
+<p><strong>주요 이벤트 시퀀스(Main Event Sequence):</strong> 이벤트의 상당수는 PC들이 길에서 직면해야 하는 위기이지만, 랜드마크, 다른 피난민과의 만남 등도 포함할 수 있습니다. 몇 가지 아이디어:</p>
+
+<ul>
+<li>도적이 습격합니다.</li>
+<li>매복당한 다른 피난민들의 시체를 발견합니다.</li>
+<li>함께 여행 중인 피난민 중 알리사(Alyssa)가 임신 중인데 진통이 옵니다.</li>
+<li>마차의 차축이 부러집니다.</li>
+<li>모닝로드 요새(Fort Morninglord)를 지나갑니다. 피난민들조차 피신처로 쓰지 않는 저주받은 장소입니다. 인근 동반자 기사단(Order of the Companion)의 임시 요새는 피난민들로 넘쳐나고 있습니다.</li>
+<li>장난꾸러기 페어리들이 식량을 훔쳐 갑니다.</li>
+<li>다수의 피난민이 모여 있는 야영지를 지나갑니다.</li>
+<li>키온타르 강을 오르내리는 배와 마주칩니다.</li>
+<li>대규모 선단이 강을 거슬러 올라옵니다 — 발더스 게이트에 소식이 전해져서 어부들의 즉석 연합이 물자를 모아 무엇이라도 해보려고 강을 거슬러 올라오는 것입니다.</li>
+<li>지옥기수단 일행이 달려갑니다(도시를 향해 가거나 도시에서 도망쳐 오거나).</li>
+<li>자리엘 숭배 교단원들이 피난민을 공격합니다. (실제로 피난민으로 위장하여 함께 여행하고 있었을 수도 있습니다.)</li>
+<li>화염 주먹단 소대가 엘투렐을 향해 행군하고 있습니다. 피난민들을 세우고 거칠게 심문하며 대공작 레이븐가드의 행방을 파악하려 합니다.</li>
+<li>식량과 물의 필요를 포함시키세요. 완전한 시뮬레이션을 추천하지는 않습니다: 식량이나 물이 부족한 이벤트를 몇 개 넣어서 PC들이 해결 방법을 찾아야 하는 정도면 됩니다.</li>
+</ul>
+
+<p>피난민 NPC들을 만들면서, 주요 이벤트 시퀀스에 씨를 뿌릴 수 있는 대인 갈등도 발견하게 될 것입니다.</p>
+
+<p>엘투렐에서 발더스 게이트까지의 거리는 거의 200마일입니다. 피난민들의 이동 속도를 감안하면, 발더스 게이트에 도착하는 데 아마 열흘이 걸릴 것입니다. 매일 이벤트를 빽빽하게 넣어야 한다고 느끼지 마세요. 두세 개면 분위기를 잡기에 충분하고, 그중 많은 것이 아주 짧을 수 있습니다. PC들이 일상을 확립한 뒤에는, 이틀치 여행을 짧은 내레이션으로 요약한 다음 다음 위기를 위해 다시 줌인하는 것도 좋습니다.</p>
+
+<h3 id="running-caravan">캐러밴 운영하기(Running the Caravan)</h3>
+
+<p>파티를 운영할 때는 '지금 시간(Now Time)'으로 플레이하면서 행동의 연속성이 있습니다. 캐러밴에서는 좀 더 추상적으로 진행됩니다 — 축약 내레이션을 사용하고 흥미로운 순간들 사이를 날카롭게 전환합니다. PC들이 NPC들과 상호작용할 시간을 주고 장면을 프레이밍하세요. 파티 운영의 멘탈 체크리스트가 여전히 유용합니다:</p>
+
+<ul>
+<li>어떤 NPC들이 서로 대화하고 있는가? (피난민 목록을 참고하세요.)</li>
+<li>PC들이 하고 있는 대화에 누가 끼어들 수 있는가? (역시 피난민 목록.)</li>
+<li>무슨 이야기를 하고 있는가?</li>
+</ul>
+
+<p>매일 <strong>"저녁 야영" 장면</strong>을 습관적으로 프레이밍하는 것이 유용할 수 있습니다 — 다양한 사회적 상호작용을 담을 수 있는 일종의 "미니 파티"입니다. 다른 기회로는:</p>
+
+<ul>
+<li>길을 걸으며.</li>
+<li>길가에서 볼일을 보며.</li>
+<li>밤 보초를 서며.</li>
+<li>식사를 함께 하거나 강에서 수통을 채우며.</li>
+</ul>
+
+<p>플레이어들이 즐기고 있다면, 열흘의 여정을 충분히 느끼게 해주세요. 별로 빠져들지 않는 것 같으면, 더 날카롭게 전환하고 시간을 앞으로 움직이되, 그래도 피난민들과 진정으로 교류할 기회는 줘야 합니다.</p>
+
+<div class="sidebar">
+<h3>디자인 노트</h3>
+<p>어느 시점에서, 피난민 중 한 명이 엘투렐은 이런 시련을 겪어본 적이 없다고 언급하게 하세요 — 붉은 쿠데타의 밤과 뱀파이어 군주 이카이아(Vampire Lord Ikaia)의 통치 때도 이 정도는 아니었다고요(리믹스 파트 4B 참조).</p>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="at-the-gate">성문에서(At the Gate)</h2>
+
+<p>피난민 캐러밴이 발더스 게이트에 도착하면, <em>아베르누스로의 하강</em> 초반에 묘사된 그대로의 상황을 발견합니다: 성문이 닫혀 있습니다. 성벽 밖에 거대한 피난민 야영지가 커지고 있지만, 밖에서는 물자가 부족한 것이 분명합니다. 피난민들을 안전하게 지키려면, 도시 안으로 들어가는 방법을 알아내야 합니다. (최소한, 거기서 더 안전한 항구로 가는 배편을 마련할 수 있으니까요.)</p>
+
+<p>성문에 직접 접근하면 화염 조지를 만납니다. 그렇지 않으면, 누군가가 조지를 가리켜 주며 "여러분의 문제를 해결해 줄 수 있는 사람, 대가를 치를 수 있다면요"라고 말해줍니다. 또는 조지가 PC들이 캐러밴을 안전하게 지켰다는 소문을 듣고 피난민 야영지로 직접 찾아올 수도 있습니다.</p>
+
+<h3 id="zodge-deal">조지의 거래(Zodge's Deal)</h3>
+
+<p>기본적으로, 조지는 PC들의 역량을 가늠하고 쓸모 있다고 판단한 뒤 거래를 제안합니다. 화염 주먹단 대리인으로 임명되어 살인 사건을 수사하는 데 동의하면, 피난민 캐러밴을 도시 안으로 들여보내 주겠다고요.</p>
+
+<p><strong>이것이 중요합니다: 거래하기(deal-making)는 이 캠페인의 또 다른 핵심 주제입니다.</strong></p>
+
+<p>조지가 제안하는 거래는 문자 그대로 악마의 거래는 아닙니다(사실 꽤 합리적이고, PC들을 뒤통수 칠 숨겨진 허점도 없습니다). 하지만 나중에 올 지옥 계약의 작은 메아리입니다. 그러니 그냥 악수하고 넘어가지 마세요: 실제로 <strong>입대 서류</strong>를 꺼내들게 하고, PC들이 서명하게 하세요.</p>
+
+<div class="sidebar">
+<h3>선택지: 입대 서류 소품</h3>
+<p>입대 서류를 실제 소품으로 만들어 플레이어들이 테이블에서 직접 서명하게 하세요. 서명이 끝나면, 서류를 재빨리 가져가서 플레이어들이 손대지 못하는 안전한 곳에 보관하는 모습을 보여주세요.</p>
+</div>
+
+<p>입대 계약서에는 워터마크 형태의 붉은 인장이 있습니다. 서류에 서명이 끝나면, 조지가 <strong>심볼론 나이프(symbolon knife)</strong>를 꺼내 이 워터마크를 불규칙하게 잘라내고, 잘라낸 반쪽을 뱃지와 함께 PC들에게 줍니다. (워터마크의 불규칙한 절단면은 해당 계약서에만 유일하게 대응되어, 모든 서명자가 합의를 확인할 수 있습니다. 이 상호작용은 리믹스 파트 4에서 설명하는 자리엘과 엘투렐 사이의 봉인된 계약을 복선으로 깔아줍니다.)</p>
+
+<p>또한, 리믹스 파트 3에서 더 자세히 다루겠지만, 살인 사건은 특히 <strong>피난민들을 표적</strong>으로 삼고 있습니다. 여기서도 시나리오 훅의 세부 사항을 캠페인의 더 넓은 주제와 연결하고 있는 것입니다.</p>
+
+<h3 id="level-up">레벨 업(Level Up)</h3>
+
+<p>PC들이 입대 서류에 서명하면, <strong>2레벨로 올릴 수 있습니다</strong>.</p>
+
+<p><em>아베르누스로의 하강</em>의 문제적 요소 중 하나는 PC 레벨업의 속도와 타이밍입니다. 예를 들어, PC들은 모험의 첫 번째 <em>장면</em> 후에 레벨업하도록 되어 있습니다. (캐릭터를 만들고 나서 아마 20분쯤 후에 내러티브를 멈추고 레벨업을 해야 하는 거죠.)</p>
+
+<p>이 문제에 대한 더 심층적인 논의는 리믹스 파트 8에서 마무리하면서 다룰 예정이지만, 여기서부터 정리를 시작합니다.</p>
+
+<p>(위에서 설명한 본격적인 피난민 캐러밴 모험을 운영하고 싶지 않다면, 처음부터 2레벨 캐릭터를 만들게 하는 것을 추천합니다.)</p>
+
+<!-- ============================================================ -->
+<h2 id="mystery">엘투렐 운명의 미스터리(The Mystery of Elturel's Fate)</h2>
+
+<p>캠페인 시작에서 강하게 확립하고자 하는 마지막 요소는 <strong>엘투렐 운명의 미스터리</strong>입니다. 이것은 사실 세 가지 별개의 계시로 나눌 수 있습니다:</p>
+
+<ol>
+<li><strong>엘투렐에 무슨 일이 일어났는가?</strong> (지옥으로 끌려갔다.)</li>
+<li><strong>왜 이런 일이 일어났는가?</strong> (도시가 지옥 계약의 일부로 팔렸다.)</li>
+<li><strong>지옥기수단의 진정한 역사.</strong> (그들은 자리엘을 배신하고 아베르누스에 버려두었다.)</li>
+</ol>
+
+<p>제 생각에, PC들은 캠페인이 시작될 때 이 답들 중 어느 것도 알지 <strong>못해야</strong> 합니다(심지어 의심조차 하지 않아야 합니다). ("아슬아슬한 차이"나 "재앙의 서막" 오프닝을 사용한다면, 엘투렐이 사라질 때 PC들이 실제로 목격하는 것이 정확히 무엇인지 신중하게 고려해야 합니다.)</p>
+
+<p><em>Getting the Players to Care</em>에서 저는 GM이 플레이어들을 세계의 로어에 실제로 관심 갖게 만드는 여러 방법을 논의했습니다. 여기에는 다음이 포함됩니다:</p>
+
+<ul>
+<li>#2: 플롯으로 만들기(Make It Plot)</li>
+<li>#4: 미스터리로 만들기(Make It Mystery)</li>
+<li>#5: 개인적으로 만들기(Make It Personal)</li>
+<li>#7: 반복적으로 만들기(Make It Repetitive)</li>
+</ul>
+
+<p>그리고 우리는 이 모든 것을 사용하여 플레이어들이 엘투렐의 운명에 관심을 갖게 만들 것입니다.</p>
+
+<h3 id="rumors">엘투렐의 소문(Rumors of Elturel)</h3>
+
+<p>엘투렐의 운명에 대한 신비감은 주로 그것을 <strong>대화의 제1주제</strong>로 만듦으로써 형성합니다. PC들이 만나는 거의 모든 사람이 엘투렐에 무슨 일이 일어났는지에 대해 다른 이론을 가지고 있거나 다른 버전의 이야기를 들었습니다. (그리고 다음에 무슨 일이 일어날까? 더 많은 도시가 파괴될까? 발더스 게이트도 위험한가? 워터딥도 파괴되었다는 소문 들었어?) 엘투렐의 운명에 대한 12가지 완성된 소문은 리믹스의 '엘투렐의 소문' 부록에서 찾을 수 있습니다.</p>
+
+<p>이 소문들을 다음 상황에 심어넣으세요:</p>
+
+<ul>
+<li>피난민들과의 대화, 그리고 발더스 게이트로 가는 길에서 만난 다른 사람들과의 대화.</li>
+<li>PC들이 성 밖 피난민 야영지에 도착할 때 필사적으로 새 소식을 묻는 사람들.</li>
+<li>화염 조지의 브리핑.</li>
+<li>발더스 게이트 거리 모퉁이에서 최신 헤드라인을 외치는 전령들.</li>
+<li>엘프송 선술집과 로우 랜턴(Low Lantern) 선술집에서의 대화.</li>
+</ul>
+
+<p>NPC들이 이 소문을 일방적으로 전달하게만 하지 마세요. <strong>뒤집어서</strong> NPC들이 PC에게 "당신은 무슨 일이 일어났다고 생각하세요?"라고 물어보게 해서 플레이어들을 참여시키세요. (이렇게 하면 플레이어들이 소문에 적극적으로 관여하고 진지하게 생각하게 됩니다.)</p>
+
+<h3 id="thavius">타비우스 크리그 확립하기(Establishing Thavius Kreeg)</h3>
+
+<p>소문과 기타 대화 중에, <strong>타비우스 크리그(Thavius Kreeg)</strong>가 (a) 엘투렐의 고위 감독관(High Observer)이었고 (b) 실종되어 도시와 함께 잃어버린 것으로 추정된다는 사실을 반복적으로 확립하세요. (파트 3에서 더 자세히 다루겠지만, 나중에 크리그가 살아있는 것을 발견할 때 플레이어들이 그 의미를 이해할 수 있도록 이 사실들을 확실히 심어놓아야 합니다.)</p>
+
+<h3 id="solutions">해답(The Solutions)</h3>
+
+<p>PC들은 파트 3: 반탐푸르 수사(The Vanthampur Investigations) 전반에 걸쳐 처음 두 계시(엘투렐에 무슨 일이 일어났는가? 그리고 왜 이런 일이 일어났는가?)에 대한 단서를 모을 수 있으며, 파트 4: 캔들킵(Candlekeep)에서 확정적인 답을 얻게 됩니다.</p>
+
+<p>지옥기수단의 진정한 역사는 파트 5: 헬투렐(Hellturel)과 파트 6: 꿈의 기계 퀘스트(Quest of the Dream Machine)에서 발견할 수 있습니다. (이것은 의도적입니다: 진실을 밝히기 전에, 수백 년간 알려져 왔던 공식 역사를 먼저 알고 충분히 관심을 가지게 해야 합니다. 양탄자 위에 먼저 올라서게 하지 않으면, 양탄자를 잡아당길 수 없으니까요!)</p>
+
+<p>이 미스터리들에 대해서는 해당 파트가 나올 때 더 자세히 다루겠습니다(아마 완전한 계시 목록도 살펴볼 것입니다).</p>
+
+<!-- Bottom Nav -->
+<div class="section-divider">* * *</div>
+
+<nav class="chapter-nav">
+  <a href="DIA-home.html" class="nav-home" title="홈">⌂</a>
+  <span class="nav-btn disabled">◀ 이전</span>
+  <span class="nav-title">알렉산드리안 리믹스</span>
+  <span class="nav-btn disabled">다음 ▶</span>
+</nav>
+
+
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+</div>
+<script>
+document.addEventListener('click', function(e) {
+  var img = e.target;
+  if (img.tagName === 'IMG' && img.closest('.illustration')) {
+    e.stopPropagation();
+    document.getElementById('lightboxImg').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+  }
+  if (img.tagName === 'IMG' && img.closest('.map-container')) {
+    e.stopPropagation();
+    document.getElementById('lightboxImg').src = img.src;
+    document.getElementById('lightbox').classList.add('active');
+  }
+});
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeLightbox();
+});
+</script>
+
+</body>
+</html>
