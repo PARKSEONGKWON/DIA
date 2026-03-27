@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>발더스 게이트 백과사전 지도</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+:root {
+  --bg-dark: #1a1510;
+  --bg-panel: #241e16;
+  --bg-card: #2e2518;
+  --bg-card-hover: #3a2f22;
+  --text: #e8dcc8;
+  --text-dim: #a89878;
+  --text-bright: #f5eede;
+  --accent: #c4553a;
+  --accent-glow: #e86b4a;
+  --gold: #d4a843;
+  --gold-dim: #8a7340;
+  --border: #4a3d2a;
+  --border-light: #6b5a3e;
+  --upper: #4a7a4a;
+  --upper-bg: rgba(74,122,74,0.15);
+  --lower: #5a6a9a;
+  --lower-bg: rgba(90,106,154,0.15);
+  --outer: #8a6a3a;
+  --outer-bg: rgba(138,106,58,0.15);
+  --landmark: #9a4a6a;
+  --landmark-bg: rgba(154,74,106,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  background: var(--bg-dark);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Header ── */
+.header {
+  background: linear-gradient(180deg, #211a12 0%, var(--bg-dark) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.back-link {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: 0.85em;
+  white-space: nowrap;
+  transition: color 0.2s;
+}
+.back-link:hover { color: var(--gold); }
+
+.header h1 {
+  font-size: 1.3em;
+  font-weight: 900;
+  color: var(--gold);
+  white-space: nowrap;
+  letter-spacing: 1px;
+}
+
+.header h1 span {
+  font-weight: 400;
+  color: var(--text-dim);
+  font-size: 0.7em;
+  margin-left: 8px;
+}
+
+/* ── Search & Tabs ── */
+.controls {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 200px;
+  max-width: 360px;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.9em;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box input:focus { border-color: var(--gold-dim); }
+.search-box input::placeholder { color: var(--text-dim); }
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-size: 0.9em;
+  pointer-events: none;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.tab-btn {
+  padding: 6px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+  font-size: 0.82em;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.tab-btn:hover { border-color: var(--border-light); color: var(--text); }
+.tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.result-count {
+  font-size: 0.8em;
+  color: var(--text-dim);
+  margin-left: auto;
+}
+
+/* ── Main Layout ── */
+.main-layout {
+  max-width: 1800px;
+  margin: 0 auto;
+  display: flex;
+  min-height: calc(100vh - 120px);
+  position: relative;
+}
+
+/* ── Map Area ── */
+.map-area {
+  flex: 1;
+  padding: 16px 20px;
+  transition: flex 0.4s ease;
+  min-width: 0;
+}
+
+.map-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  border: 1px solid var(--border);
+}
+
+.map-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ── Zone overlays ── */
+.zone {
+  position: absolute;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  transition: all 0.25s;
+}
+
+.zone:hover, .zone.active {
+  border-color: rgba(212,168,67,0.7);
+  background: rgba(212,168,67,0.15);
+  box-shadow: 0 0 20px rgba(212,168,67,0.3);
+}
+
+.zone.active {
+  border-color: var(--gold);
+  background: rgba(212,168,67,0.25);
+  box-shadow: 0 0 30px rgba(212,168,67,0.5);
+}
+
+.zone .zone-label {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20,16,10,0.95);
+  color: var(--gold);
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  font-weight: 700;
+  z-index: 20;
+  border: 1px solid var(--border);
+}
+
+.zone:hover .zone-label { display: block; }
+
+/* ── Pin markers for specific landmarks ── */
+.pin {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  margin-left: -9px;
+  margin-top: -9px;
+  cursor: pointer;
+  z-index: 15;
+  transition: all 0.25s;
+}
+
+.pin-dot {
+  width: 12px;
+  height: 12px;
+  margin: 3px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 8px rgba(196,85,58,0.6);
+  transition: all 0.25s;
+}
+
+.pin:hover .pin-dot, .pin.active .pin-dot {
+  background: var(--gold);
+  box-shadow: 0 0 16px rgba(212,168,67,0.8);
+  transform: scale(1.3);
+}
+
+.pin .zone-label {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20,16,10,0.95);
+  color: var(--gold);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  white-space: nowrap;
+  pointer-events: none;
+  font-weight: 700;
+  z-index: 20;
+  border: 1px solid var(--border);
+}
+
+.pin:hover .zone-label { display: block; }
+
+/* ── Encyclopedia Panel ── */
+.panel-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 199;
+}
+
+.encyclopedia-panel {
+  position: fixed;
+  top: 0;
+  right: -40%;
+  width: 38%;
+  min-width: 380px;
+  max-width: 560px;
+  height: 100vh;
+  background: var(--bg-panel);
+  border-left: 1px solid var(--border);
+  box-shadow: -8px 0 40px rgba(0,0,0,0.6);
+  z-index: 200;
+  transition: right 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.encyclopedia-panel.open { right: 0; }
+
+.panel-close {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: linear-gradient(180deg, var(--bg-panel) 80%, transparent);
+}
+
+.panel-close-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.panel-close-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.panel-category-badge {
+  font-size: 0.75em;
+  padding: 3px 10px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+.badge-upper { background: var(--upper-bg); color: var(--upper); border: 1px solid var(--upper); }
+.badge-lower { background: var(--lower-bg); color: var(--lower); border: 1px solid var(--lower); }
+.badge-outer { background: var(--outer-bg); color: var(--outer); border: 1px solid var(--outer); }
+
+.panel-content {
+  padding: 0 24px 40px;
+}
+
+.panel-title-ko {
+  font-size: 1.5em;
+  font-weight: 900;
+  color: var(--gold);
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+
+.panel-title-en {
+  font-size: 0.85em;
+  color: var(--text-dim);
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.panel-section {
+  margin-bottom: 20px;
+}
+
+.panel-section-title {
+  font-size: 0.78em;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-section p, .panel-section ul {
+  font-size: 0.9em;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.panel-section ul {
+  padding-left: 18px;
+}
+
+.panel-section li {
+  margin-bottom: 4px;
+}
+
+.panel-link-btn {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.85em;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.panel-link-btn:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ── Location Cards Grid ── */
+.cards-section {
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.cards-section-title {
+  font-size: 1.1em;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.loc-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.loc-card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.loc-card.hidden { display: none; }
+
+.loc-card-cat {
+  font-size: 0.68em;
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-weight: 700;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.loc-card-name {
+  font-size: 1em;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 2px;
+}
+
+.loc-card-en {
+  font-size: 0.78em;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.loc-card-desc {
+  font-size: 0.8em;
+  color: var(--text-dim);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Scrollbar ── */
+.encyclopedia-panel::-webkit-scrollbar { width: 6px; }
+.encyclopedia-panel::-webkit-scrollbar-track { background: var(--bg-dark); }
+.encyclopedia-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ── Mobile ── */
+@media (max-width: 900px) {
+  .encyclopedia-panel {
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+    right: -100%;
+  }
+  .main-layout { flex-direction: column; }
+  .map-area { padding: 10px; }
+  .cards-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .header-inner { gap: 8px; }
+  .header h1 { font-size: 1em; }
+  .header h1 span { display: none; }
+  .controls { padding: 8px 10px; }
+  .tab-btn { padding: 5px 10px; font-size: 0.75em; }
+}
+
+@media (max-width: 600px) {
+  .tabs { flex-wrap: wrap; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .panel-title-ko { font-size: 1.2em; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <a href="DIA-home.html" class="back-link">&#8592; DIA 홈</a>
+    <h1>발더스 게이트 백과사전 지도 <span>Encyclopedia Map of Baldur's Gate</span></h1>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="search-box">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="장소 검색... (한국어 / English)" oninput="filterLocations()">
+  </div>
+  <div class="tabs">
+    <button class="tab-btn active" data-cat="all" onclick="setTab('all')">전체</button>
+    <button class="tab-btn" data-cat="upper" onclick="setTab('upper')">상부 도시</button>
+    <button class="tab-btn" data-cat="lower" onclick="setTab('lower')">하부 도시</button>
+    <button class="tab-btn" data-cat="outer" onclick="setTab('outer')">외곽 도시</button>
+  </div>
+  <span class="result-count" id="resultCount"></span>
+</div>
+
+<!-- Main Layout -->
+<div class="main-layout">
+  <div class="map-area">
+    <div class="map-wrap" id="mapWrap">
+      <img src="bg-neighborhoods-map.webp" alt="발더스 게이트 지역 지도">
+
+      <!-- Upper City zones -->
+      <div class="zone" data-loc="citadel-streets" style="left:18%;top:22%;width:14%;height:18%;" onclick="openPanel('citadel-streets')">
+        <span class="zone-label">경비대 성채 구역</span>
+      </div>
+      <div class="zone" data-loc="manorborn" style="left:24%;top:18%;width:12%;height:14%;" onclick="openPanel('manorborn')">
+        <span class="zone-label">매너본 (Manorborn)</span>
+      </div>
+      <div class="zone" data-loc="temples-district" style="left:30%;top:28%;width:10%;height:12%;" onclick="openPanel('temples-district')">
+        <span class="zone-label">신전 구역 (Temples)</span>
+      </div>
+      <div class="zone" data-loc="the-wide" style="left:35%;top:34%;width:10%;height:10%;" onclick="openPanel('the-wide')">
+        <span class="zone-label">더 와이드 (The Wide)</span>
+      </div>
+
+      <!-- Lower City zones -->
+      <div class="zone" data-loc="the-steeps" style="left:10%;top:42%;width:12%;height:16%;" onclick="openPanel('the-steeps')">
+        <span class="zone-label">더 스팁스 (The Steeps)</span>
+      </div>
+      <div class="zone" data-loc="eastway" style="left:22%;top:40%;width:10%;height:12%;" onclick="openPanel('eastway')">
+        <span class="zone-label">이스트웨이 (Eastway)</span>
+      </div>
+      <div class="zone" data-loc="heapside" style="left:32%;top:42%;width:12%;height:14%;" onclick="openPanel('heapside')">
+        <span class="zone-label">히프사이드 (Heapside)</span>
+      </div>
+      <div class="zone" data-loc="brampton" style="left:44%;top:38%;width:10%;height:12%;" onclick="openPanel('brampton')">
+        <span class="zone-label">브램프턴 (Brampton)</span>
+      </div>
+      <div class="zone" data-loc="bloomridge" style="left:37%;top:28%;width:8%;height:10%;" onclick="openPanel('bloomridge')">
+        <span class="zone-label">블룸리지 (Bloomridge)</span>
+      </div>
+      <div class="zone" data-loc="dusthawk-hill" style="left:55%;top:28%;width:14%;height:16%;" onclick="openPanel('dusthawk-hill')">
+        <span class="zone-label">더스트호크 언덕</span>
+      </div>
+      <div class="zone" data-loc="gray-harbor" style="left:20%;top:54%;width:26%;height:12%;" onclick="openPanel('gray-harbor')">
+        <span class="zone-label">그레이 하버 (Gray Harbor)</span>
+      </div>
+
+      <!-- Outer City zones -->
+      <div class="zone" data-loc="blackgate" style="left:4%;top:6%;width:12%;height:14%;" onclick="openPanel('blackgate')">
+        <span class="zone-label">블랙게이트 (Blackgate)</span>
+      </div>
+      <div class="zone" data-loc="stonyeyes" style="left:6%;top:26%;width:8%;height:16%;" onclick="openPanel('stonyeyes')">
+        <span class="zone-label">스토니아이즈 (Stonyeyes)</span>
+      </div>
+      <div class="zone" data-loc="little-calimshan" style="left:38%;top:8%;width:14%;height:12%;" onclick="openPanel('little-calimshan')">
+        <span class="zone-label">리틀 칼림샨</span>
+      </div>
+      <div class="zone" data-loc="whitkeep" style="left:53%;top:8%;width:10%;height:12%;" onclick="openPanel('whitkeep')">
+        <span class="zone-label">위트킵 (Whitkeep)</span>
+      </div>
+      <div class="zone" data-loc="norchapel" style="left:14%;top:8%;width:12%;height:10%;" onclick="openPanel('norchapel')">
+        <span class="zone-label">노채플 (Norchapel)</span>
+      </div>
+      <div class="zone" data-loc="twin-songs" style="left:70%;top:20%;width:10%;height:16%;" onclick="openPanel('twin-songs')">
+        <span class="zone-label">트윈 송즈 (Twin Songs)</span>
+      </div>
+      <div class="zone" data-loc="rivington" style="left:73%;top:60%;width:14%;height:16%;" onclick="openPanel('rivington')">
+        <span class="zone-label">리빙턴 (Rivington)</span>
+      </div>
+      <div class="zone" data-loc="tumbledown" style="left:80%;top:75%;width:16%;height:16%;" onclick="openPanel('tumbledown')">
+        <span class="zone-label">텀블다운 (Tumbledown)</span>
+      </div>
+      <div class="zone" data-loc="wyrms-crossing" style="left:68%;top:80%;width:12%;height:10%;" onclick="openPanel('wyrms-crossing')">
+        <span class="zone-label">웜즈 크로싱</span>
+      </div>
+
+      <!-- Seatower zone -->
+      <div class="zone" data-loc="seatower" style="left:14%;top:60%;width:8%;height:10%;" onclick="openPanel('seatower')">
+        <span class="zone-label">발두란의 해탑</span>
+      </div>
+
+      <!-- Pin markers for specific landmarks -->
+      <div class="pin" data-loc="elfsong-tavern" style="left:26%;top:44%;" onclick="openPanel('elfsong-tavern')" title="엘프송 주점">
+        <div class="pin-dot"></div>
+        <span class="zone-label">엘프송 주점</span>
+      </div>
+      <div class="pin" data-loc="basilisk-gate" style="left:8%;top:38%;" onclick="openPanel('basilisk-gate')" title="바실리스크 문">
+        <div class="pin-dot"></div>
+        <span class="zone-label">바실리스크 문</span>
+      </div>
+      <div class="pin" data-loc="low-lantern" style="left:25%;top:60%;" onclick="openPanel('low-lantern')" title="로우 랜턴">
+        <div class="pin-dot"></div>
+        <span class="zone-label">로우 랜턴</span>
+      </div>
+      <div class="pin" data-loc="sorcerous-sundries" style="left:36%;top:46%;" onclick="openPanel('sorcerous-sundries')" title="소서러스 선드리즈">
+        <div class="pin-dot"></div>
+        <span class="zone-label">소서러스 선드리즈</span>
+      </div>
+      <div class="pin" data-loc="counting-house" style="left:14%;top:48%;" onclick="openPanel('counting-house')" title="카운팅 하우스">
+        <div class="pin-dot"></div>
+        <span class="zone-label">카운팅 하우스</span>
+      </div>
+      <div class="pin" data-loc="hissing-stones" style="left:18%;top:55%;" onclick="openPanel('hissing-stones')" title="히싱 스톤즈">
+        <div class="pin-dot"></div>
+        <span class="zone-label">히싱 스톤즈</span>
+      </div>
+      <div class="pin" data-loc="blushing-mermaid" style="left:38%;top:48%;" onclick="openPanel('blushing-mermaid')" title="블러싱 머메이드">
+        <div class="pin-dot"></div>
+        <span class="zone-label">블러싱 머메이드</span>
+      </div>
+      <div class="pin" data-loc="high-hall" style="left:33%;top:32%;" onclick="openPanel('high-hall')" title="하이 홀">
+        <div class="pin-dot"></div>
+        <span class="zone-label">하이 홀</span>
+      </div>
+      <div class="pin" data-loc="high-house-of-wonders" style="left:31%;top:34%;" onclick="openPanel('high-house-of-wonders')" title="경이의 대전">
+        <div class="pin-dot"></div>
+        <span class="zone-label">경이의 대전</span>
+      </div>
+      <div class="pin" data-loc="baldurs-gate-gate" style="left:12%;top:36%;" onclick="openPanel('baldurs-gate-gate')" title="발두르의 문">
+        <div class="pin-dot"></div>
+        <span class="zone-label">발두르의 문 (성문)</span>
+      </div>
+      <div class="pin" data-loc="insight-park" style="left:48%;top:42%;" onclick="openPanel('insight-park')" title="인사이트 공원">
+        <div class="pin-dot"></div>
+        <span class="zone-label">인사이트 공원</span>
+      </div>
+      <div class="pin" data-loc="ladys-hall" style="left:27%;top:24%;" onclick="openPanel('ladys-hall')" title="레이디스 홀">
+        <div class="pin-dot"></div>
+        <span class="zone-label">레이디스 홀</span>
+      </div>
+      <div class="pin" data-loc="cliffside-cemetery" style="left:62%;top:36%;" onclick="openPanel('cliffside-cemetery')" title="절벽 묘지">
+        <div class="pin-dot"></div>
+        <span class="zone-label">절벽 묘지</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Panel Overlay -->
+<div class="panel-overlay" id="panelOverlay" onclick="closePanel()"></div>
+
+<!-- Encyclopedia Panel -->
+<div class="encyclopedia-panel" id="encyclopediaPanel">
+  <div class="panel-close">
+    <span class="panel-category-badge" id="panelBadge"></span>
+    <button class="panel-close-btn" onclick="closePanel()" title="닫기">&#10005;</button>
+  </div>
+  <div class="panel-content" id="panelContent">
+  </div>
+</div>
+
+<!-- Cards Section -->
+<div class="cards-section">
+  <div class="cards-section-title">전체 장소 목록 (34개)</div>
+  <div class="cards-grid" id="cardsGrid"></div>
+</div>
+
+<script>
+// ── Location Data ──
+const locations = {
+  // ====== UPPER CITY ======
+  "the-wide": {
+    nameKo: "더 와이드 (광장)",
+    nameEn: "The Wide",
+    category: "upper",
+    categoryKo: "상부 도시 (Upper City)",
+    description: "더 와이드는 발더스 게이트 상부 도시의 광대한 야외 시장이자 공공 광장이었다. 도시의 주요 모임 장소로, 발두리아인과 외부인 모두가 소문을 나누고, 교역하고, 정치를 논하고, 사업을 할 수 있는 곳이었다. 시장이자 공론장으로서의 명성은 먼 타이(Thay)까지 알려져 있을 정도로 페어룬 전역에서 유명했다.",
+    features: [
+      "상인, 예술가, 장인, 점술사, 마법사, 현자들이 운영하는 수많은 임시 노점과 부스",
+      "빛나는 남부의 직물과 향신료부터 현지 도구와 외국산 비단까지 다양한 물품 거래",
+      "와이드의 보안관(Bailiff of the Wide)이 재무관(Purse Master) 아래에서 관리"
+    ],
+    inhabitants: "상인, 장인, 노점상, 점술사, 마법사, 현자, 페어룬 각지의 시민들. 와이드의 보안관이 모든 상인의 활동을 조직하고 기록했다.",
+    atmosphere: "활기차고, 국제적이며, 생동감 넘치는 곳. 상업과 정치가 만나고 모든 사회 계층이 야외에서 뒤섞이는, 발더스 게이트 공공 생활의 심장부.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-economy"
+  },
+  "high-hall": {
+    nameKo: "하이 홀 (대공의 궁전)",
+    nameEn: "High Hall / Ducal Palace",
+    category: "upper",
+    categoryKo: "상부 도시 (Upper City)",
+    description: "대공의 궁전이라고도 불리는 하이 홀은 신전 구역 중심부에 위치한 발더스 게이트의 대요새였다. 원래 군사 요새였으나, 15세기 DR에 이르러서는 도시의 거의 모든 정부 업무를 수행하는 곳이 되었다. 지배 대공들의 권좌로 기능했다.",
+    features: [
+      "도시의 법원, 공식 기록관, 정부 하인들의 본거지",
+      "귀족 의회(Parliament of Peers)와 4인 의회(Council of Four)가 이곳에서 회의를 개최",
+      "탐험가 발두란에게 헌정된 '세속 신전'으로, 대연회장(festhall)을 갖추고 있음"
+    ],
+    inhabitants: "대공, 4인 의회 의원, 귀족 의회 의원, 도시 관리, 기록관, 정부 하인들. 부유한 패트리아르 귀족들도 회의와 축하연을 위해 자주 방문했다.",
+    atmosphere: "군사 요새의 위엄과 시민 통치의 화려함이 결합된, 웅장하고 위압적인 곳. 도시의 운명이 결정되는 권력, 의식, 정치적 책략의 장소.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-government"
+  },
+  "citadel-streets": {
+    nameKo: "경비대 성채 (워치 시타델)",
+    nameEn: "Watch Citadel / Stormkeep",
+    category: "upper",
+    categoryKo: "상부 도시 (Upper City)",
+    description: "스톰킵이라고도 불리는 경비대 성채는 상부 도시 시타델 거리 구역에 위치한 경비대(Watch)의 본부였다. 집결지, 훈련장, 그리고 필요시 수감자 임시 수용소로 사용되었다.",
+    features: [
+      "수석 경관(High Constable)과 성벽 총관(Master of Walls)이 작전을 감독",
+      "경비대원들이 성벽 안에서 훈련하고 상부 도시 경비를 위한 군수 자원을 유지",
+      "1492 DR, 절대자(Absolute)의 세력과 나우틸로이드 함선의 공격으로 부분적으로 파괴됨"
+    ],
+    inhabitants: "경비대 대원, 수석 경관, 군사 인력. 경비대는 상부 도시 거리를 순찰하고, 일몰 시 통행금지를 시행하며, 패트리아르 가문의 이익을 보호했다.",
+    atmosphere: "규율적이고 군사적인 곳. 상부 도시의 질서와 권위의 보루로, 부유한 패트리아르를 성벽 뒤에서 안전하게 지키는 보안 기구를 대표한다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-watch"
+  },
+  "manorborn": {
+    nameKo: "매너본 (귀족 저택 구역)",
+    nameEn: "Manorborn",
+    category: "upper",
+    categoryKo: "상부 도시 (Upper City)",
+    description: "매너본은 발더스 게이트 상부 도시의 서쪽 구역으로, 원래 '올드 타운'의 일부였다. 가장 오래되고 가장 부유한 패트리아르 가문들이 거주하며, 자신들을 도시의 '정당한 통치자'로 여겼다. 귀족 의회 의원 거의 대부분이 이곳에 저택을 두고 있었다.",
+    features: [
+      "벨트, 두린볼드, 엘탄, 훈, 오베론, 사셴스타, 샤터실드 등 대귀족 저택",
+      "실버실드 가문 저택 — 1세기 이상 4인 의회에 거의 연속적으로 자리를 유지한 가문",
+      "레이디스 홀 (티모라 신전) 소재"
+    ],
+    inhabitants: "최부유 패트리아르 가문과 그 가솔, 귀족 의회 의원, 크람모크 아크스타프, 레이지패스트 같은 저명한 현자들. 도시 창건 시기까지 혈통을 거슬러 올라가는 구귀족층.",
+    atmosphere: "배타적이고, 귀족적이며, 구세계적인 곳. 거대한 조상 전래 저택이 늘어선 조용한 거리가 부와 정치 권력을 풍기며, 혈통과 유산이 무엇보다 중요한 구역.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-patriars"
+  },
+  "temples-district": {
+    nameKo: "신전 구역",
+    nameEn: "Temples District",
+    category: "upper",
+    categoryKo: "상부 도시 (Upper City)",
+    description: "신전 구역은 발더스 게이트 상부 도시에서 가장 크고, 가장 오래되었으며, 가장 중요한 지역이었다. 소드 코스트 전역에 유명한 도시의 위대한 건물과 랜드마크가 들어서 있으며, 도시의 영적·정치적 심장부 역할을 했다.",
+    features: [
+      "대공의 궁전 (하이 홀) 소재",
+      "경이의 대전 (곤드 신전) 및 경이의 전당 박물관 소재",
+      "세 오래된 통 여관 (Three Old Kegs) — 페어룬 최고의 여관 중 하나, 은퇴한 화염 주먹단원에게 인기"
+    ],
+    inhabitants: "다양한 신앙의 사제와 성직자, 정부 관리, 은퇴한 화염 주먹단원, 부유한 여행자, 대신전을 방문하는 순례자, 공방에서 일하는 곤드 사제들.",
+    atmosphere: "엄숙하고 인상적인 곳. 우뚝 솟은 신전과 위압적인 대공 궁전이 영속성과 권위의 분위기를 만들어내는, 신앙과 통치가 교차하는 거대 건축물의 구역.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-religion"
+  },
+  "high-house-of-wonders": {
+    nameKo: "경이의 대전 (곤드 대신전)",
+    nameEn: "High House of Wonders",
+    category: "upper",
+    categoryKo: "상부 도시 (Upper City)",
+    description: "경이의 대전, 또는 곤드의 대전은 발명과 장인의 신 곤드에게 바쳐진, 발더스 게이트에서 가장 큰 신전이었다. 신전 구역의 경이의 전당 박물관 옆에 위치했으며, 곤드 사제들이 발두리아인을 위해 실험적 장치와 기계를 만드는 광대한 공방이었다.",
+    features: [
+      "독특한 원주가 있는 백색 대리석 건물",
+      "곤드 사제들이 새로운 기계를 설계하고, 기존 설계를 개량하며, 경이의 전당에서 판매할 장치를 제조",
+      "항구의 76대 기계식 크레인이 이곳에서 원래 설계됨"
+    ],
+    inhabitants: "대기교사 탈라몬드 알바이어가 21명의 사제와 함께 운영 (14세기 DR 후반 기준). 곤드 사제(곤즈맨)들은 혁신에 대한 높은 수요 덕분에 도시 관리들로부터 특별한 후원을 받았다.",
+    atmosphere: "신성한 헌신과 근면한 발명이 독특하게 결합된 곳. 망치 소리와 톱니바퀴 돌아가는 소리가 경건한 침묵과 뒤섞이는, 조용한 명상이 아닌 창조와 독창성을 찬양하는 신전.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-religion"
+  },
+  "ladys-hall": {
+    nameKo: "레이디스 홀 (티모라 신전)",
+    nameEn: "Lady's Hall",
+    category: "upper",
+    categoryKo: "상부 도시 (Upper City)",
+    description: "레이디스 홀은 행운의 여신 티모라의 신전으로, 발더스 게이트 건립 직후에 설립되었다. 매너본 구역에 위치한 이 화강암 건물은 슬레이트 지붕과 단일 첨탑을 가졌으며, 원래 바다 신 발쿠르의 신전이 있던 자리에 지어졌다.",
+    features: [
+      "원래 발쿠르 신전이었으나, 일련의 해상 재난 후 시민들이 발쿠르 사제들에게 폭동을 일으킨 뒤 변경",
+      "뱃사람들의 행운 이야기를 묘사한 조각상과 그림으로 내부 장식",
+      "건물의 역사가 발더스 게이트와 바다의 변덕스러운 관계를 반영"
+    ],
+    inhabitants: "대사제 찬탈라스 울브라이트가 24명의 사제와 69명의 추종자와 함께 운영 (14세기 DR). 생업이 행운에 달린 뱃사람, 선장, 상인들이 자주 방문했다.",
+    atmosphere: "희망과 행운의 안식처. 티모라 성직자들은 도시의 항해 인구 사이에서 큰 성공을 거두어, 뱃사람들이 순풍을 기도하고 상인들이 위험한 항해 전 축복을 구하는 곳이 되었다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-religion"
+  },
+
+  // ====== LOWER CITY ======
+  "bloomridge": {
+    nameKo: "블룸리지 (꽃 언덕 구역)",
+    nameEn: "Bloomridge",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "블룸리지는 하부 도시 내의 부유한 구역으로, 구벽(Old Wall) 남쪽 그레이 하버 서쪽에 위치했다. 상부 도시 패트리아르와 유사한 생활 방식을 열망하는 하부 도시의 부유한 시민들 — 상인, 지주, 선장들 — 의 거주지였다.",
+    features: [
+      "구벽에 구조적·비전 공학적 위업으로 부분적으로 건축됨",
+      "넓은 야외 계단으로 연결된, 도시 블록 전체를 차지하는 대저택",
+      "카페, 레스토랑, 부티크 상점이 거리를 따라 늘어섬. 코란의 저택과 스마일링 보어 카페 소재"
+    ],
+    inhabitants: "부유한 상인, 지주, 선장, 사회적 상승을 꿈꾸는 이들. 귀족 의회 의원이자 전직 모험가인 코란이 이곳에 저택을 두었다.",
+    atmosphere: "하부 도시 기준으로 세련되고 야심적인 곳. 넓은 계단과 대저택이 있는 상대적으로 우아한 구역으로, 신흥 부유층이 성벽 위 구귀족의 생활 방식을 모방하려 했다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-murder"
+  },
+  "eastway": {
+    nameKo: "이스트웨이 (동쪽 길 구역)",
+    nameEn: "Eastway",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "이스트웨이는 하부 도시의 대형 구역 중 하나로, 동쪽의 그레이 하버와 바실리스크 문 사이에 위치했다. 북쪽으로 히프사이드, 남쪽으로 브램프턴과 접하며, 발더스 게이트에서 가장 유명한 시설들이 있는 활기찬 상업 구역이었다.",
+    features: [
+      "블레이드 앤 스타즈 여관, 엘프송 주점, 로우 랜턴 연회장 소재",
+      "이스트웨이 익스페디션 — 철트행 모험가를 위한 장비 판매점",
+      "항구감독관 관저 — 도시의 5대 통치관 중 하나의 권좌"
+    ],
+    inhabitants: "상인, 모험가, 뱃사람, 항만 노동자, 주점 단골. 항구감독관과 그 직원. 깃발 없는 군단 대원. 발더스 게이트 사회의 다양한 단면.",
+    atmosphere: "활기차고 상업적으로 역동적인 곳. 모험가가 유명한 주점에서 항만 노동자와 어깨를 부딪치고, 항구의 사업이 이국땅으로 향하는 여행자들의 흥분과 뒤섞이는 구역.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-flaming-fist"
+  },
+  "heapside": {
+    nameKo: "히프사이드 (옛 하부 도시)",
+    nameEn: "Heapside",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "히프사이드는 하부 도시의 대형 구역으로, 그레이 하버 북동쪽에 위치하며 북쪽으로 구벽, 남쪽으로 이스트웨이와 접했다. 이 이름은 원래 '하부 도시'라는 명칭이 세금 반란 이후에 쓰이기 전까지 구벽 바깥 전체 정착지를 가리켰다.",
+    features: [
+      "블러싱 머메이드 주점 — 소드 코스트 전역에서 범죄자들의 집결지로 악명 높음",
+      "소서러스 선드리즈 마법 상점 — 멀스 레스트 광장의 스톰쇼어 거리에 위치",
+      "구역 이름이 발더스 게이트 역사의 가장 오래된 층을 보존"
+    ],
+    inhabitants: "모든 계층의 다양한 주민. 범죄자, 상인, 일반 노동자, 마법사. 구역의 다양성은 성벽 바깥 원래 정착지로서의 역사적 역할을 반영했다.",
+    atmosphere: "다양하고 다소 거친 곳. 발더스 게이트에서 가장 절충적인 구역 중 하나로, 존경받는 사업체와 악명 높은 범죄 소굴이 혼재. '성벽 바깥' 정착지의 원래 성격이 수세기에 걸쳐 지속되었다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-gray-harbor"
+  },
+  "the-steeps": {
+    nameKo: "더 스팁스 (가파른 비탈 구역)",
+    nameEn: "The Steeps",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "더 스팁스는 구벽과 그레이 하버 동쪽 사이에 위치한 하부 도시 구역이었다. 항구에서 발두르의 문(실제 성문)을 통해 상부 도시로 가는 가장 직접적인 경로로, 자연스러운 상업적 이점을 가졌다.",
+    features: [
+      "카운팅 하우스 (중앙 은행 및 환전소) 소재",
+      "워터 퀸스 하우스 (엄벌리 신전) 및 퀸스 페이버 대리석 분수 소재",
+      "극적으로 가파른 큰길이 구역의 이름과 성격을 부여"
+    ],
+    inhabitants: "수익성 좋은 상점가의 부유한 상인, 환전상, 엄벌리 성직자, 방문하는 패트리아르. 부유한 여행자들이 있어 다른 하부 도시 지역보다 화염 주먹단 순찰이 많았다.",
+    atmosphere: "상업적이고 상승 지향적인 곳. 성공한 상점이 늘어선 가파른 거리로, 상부 도시 문과의 근접성 덕분에 하부 도시에서 가장 번창하고 경비가 잘 되는 구역.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-crews"
+  },
+  "brampton": {
+    nameKo: "브램프턴",
+    nameEn: "Brampton",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "브램프턴은 발더스 게이트 남동쪽, 하부 도시 내 이스트웨이 남쪽 그레이 하버 동쪽에 위치한 구역이었다. 다른 구역들과 달리 유명한 랜드마크가 많지 않아 이웃 구역에 비해 다소 눈에 띄지 않았다.",
+    features: [
+      "외곽 도시의 텀블다운으로 가려면 브램프턴을 통과해야 함",
+      "밀수 통로 — 리빙턴에서 하류를 따라 브램프턴 부두로 물건을 이동, 통행세 회피",
+      "달의 요정 데니악이 적색 용으로 변신하여 폭발을 일으킨 사건의 현장"
+    ],
+    inhabitants: "항만 노동자, 밀수꾼, 일반 노동자. 1480년대 DR 중반, 잠시 티아마트 숭배 용의 교단 분파인 데니악의 은신처가 되어 구역으로 홉고블린을 밀반입했다.",
+    atmosphere: "다른 하부 도시 구역에 비해 조용하고 간과되는 곳. 목적지라기보다 통로 역할을 하는 노동자 계급 거주지로, 해안가를 따라 밀수 활동의 기류가 흐르는 곳.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-gates"
+  },
+  "seatower": {
+    nameKo: "발두란의 해탑",
+    nameEn: "Seatower of Balduran",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "발두란의 해탑은 발더스 게이트 만의 바위섬 위에 세워진 거대한 요새로, 서쪽 해안에서 다리로 본토와 연결되었다. 발두란이 탐험 재산을 그레이 하버 요새화에 투자했을 때 건설된 이 탑은, 해적 소굴을 번영하는 도시로 변모시키는 데 기여했다.",
+    features: [
+      "막사, 해군 기지, 감옥, 요새로 사용",
+      "완전한 무기고와 적선을 격퇴할 투석기 보유",
+      "동쪽 부두까지 거대한 쇠사슬을 펼쳐 항구 입구를 차단할 수 있음"
+    ],
+    inhabitants: "화염 주먹단 병사, 해군 인력, 수감자, 군사 지휘관. 이 요새는 도시 방어의 핵심 군사 시설이었다.",
+    atmosphere: "엄숙하고 위압적인 곳. 만의 수면 위로 솟아오른 군사 거점으로, 항구와 상업을 보호하겠다는 도시의 결의를 상징한다. 항구 입구를 가로지르는 거대한 쇠사슬이 침략자에 대한 강력한 억지력이었다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-guild"
+  },
+  "gray-harbor": {
+    nameKo: "그레이 하버 (회색 항구)",
+    nameEn: "Gray Harbor",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "그레이 하버는 페어룬 서해안에서 가장 크고 바쁜 항구 중 하나로, 하부 도시 6개 구역 전체에 걸쳐 도시의 경사진 절벽을 따라 초승달 모양으로 펼쳐져 있었다. 이 이름은 원래 도시가 발더스 게이트로 개명되기 전 전체 정착지에 붙여진 것이었다.",
+    features: [
+      "12개 이상의 부두와 곤드 성직자가 설계한 76대의 기계식 크레인",
+      "원래 약탈자들이 치온타르 강을 거슬러 올라오던 해적 소굴",
+      "204 DR경, 이미 소드 코스트 전역에 기항지로 널리 알려짐"
+    ],
+    inhabitants: "뱃사람, 항만 노동자, 길드 후원 갑판원(크레인 운영), 상인, 항만 관리, 항구감독관. 페어룬 각지의 선박이 정박했다.",
+    atmosphere: "시끄럽고, 산업적이며, 국제적인 곳. 크레인 소리, 항만 노동자의 외침, 삐걱대는 선박이 끊임없는 소음을 만들어내는, 발더스 게이트의 생명줄. 해적 시절의 거친 기질이 여전히 남아 있었다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-gray-harbor"
+  },
+  "elfsong-tavern": {
+    nameKo: "엘프송 주점 (엘프노래 주점)",
+    nameEn: "Elfsong Tavern",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "엘프송 주점은 발더스 게이트에서 가장 인기 있는 주점 중 하나로, 하부 도시 이스트웨이 구역의 웜즈 크로싱 방면 성문 근처에 위치했다. 주기적으로 주점을 우울한 노래로 채우는 여성 엘프의 유령 목소리에서 이름을 따왔다.",
+    features: [
+      "초승달 검의 일원 남편이 발더스 게이트를 지키러 떠나 돌아오지 못한 유령 엘프 여인의 노래",
+      "엘프어 가사는 바다에서 잃은 이름 모를 연인을 애도",
+      "2층짜리 크고 우아하게 지어진 건물이나 다소 낡았으며, 어둡고 익명적인 부스가 있는 선술장"
+    ],
+    inhabitants: "모험가부터 서민까지 다양한 손님. 대부분의 손님은 엘프노래가 시작되면 말을 멈추고, 끝난 후에야 다시 대화를 이어갔다. 엘프어를 아는 이들은 그 애잔한 가사를 이해할 수 있었다.",
+    atmosphere: "우울하면서도 사랑받는 곳. 유령의 노래가 소드 코스트 전역에서 방문객을 끌어들이는 독특하고 애잔한 분위기를 만들었다. 초자연과 일상이 공존하며, 모든 잔에 씁쓸한 감미로움을 더하는 장소.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-flaming-fist"
+  },
+  "basilisk-gate": {
+    nameKo: "바실리스크 문",
+    nameEn: "Basilisk Gate",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "바실리스크 문은 발더스 게이트 외벽의 성문이자 지역 랜드마크로, 하부 도시의 이스트웨이 구역과 외곽 도시의 스토니아이즈 구역을 구분했다. 코스트 웨이를 따라 도시 동쪽 출입로 역할을 했다.",
+    features: [
+      "저명한 사망 패트리아르의 조각상이 줄지어 있음",
+      "엔타르 실버실드의 초상이 문 위에 놓인 후, 저명한 발두리아인을 이런 방식으로 기리는 전통이 생김",
+      "화염 주먹단 사무소와 소수의 독방 감옥 포함"
+    ],
+    inhabitants: "문을 지키고 통행세를 거두는 화염 주먹단 병사, 감옥의 수감자, 코스트 웨이를 따라 끊임없이 오가는 상인과 여행자의 흐름.",
+    atmosphere: "위압적이고 의례적인 곳. 조각상이 늘어선 문은 방어 요충지이자 도시의 위인들을 기리는 기념물로, 모든 입성자에게 발더스 게이트의 부와 역사를 상기시켰다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-gates"
+  },
+  "baldurs-gate-gate": {
+    nameKo: "발두르의 문 (성문)",
+    nameEn: "Baldur's Gate (the gate)",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "발두르의 문은 도시의 이름을 그대로 딴 성문이자, 발더스 게이트에서 가장 오래된 랜드마크 중 하나로 구벽 중심부에 위치했다. 귀족적인 상부 도시와 노동자 계급의 하부 도시를 구분했으며, 도시 전체에 이름을 부여했다.",
+    features: [
+      "발두란이 탐험 재산으로 그레이 하버를 보호하는 거대한 화강암 성벽의 일부로 건설",
+      "세금 반란 이전에는 항구에서 상부 도시로 올라가는 유일한 통로",
+      "이 문을 통과하는 물품에 대한 과세가 직접적으로 도시 통치 구조를 바꾼 세금 반란을 촉발"
+    ],
+    inhabitants: "문 경비, 세금 징수원(역사적), 상부 도시와 하부 도시를 오가는 끊임없는 시민과 상인의 흐름.",
+    atmosphere: "역사적이고 상징적으로 무거운 곳. 부와 노동, 구귀족과 노동자 계급 사이의 물리적 경계선. 문자 그대로 도시에 이름을 부여했으며, 과세 정책이 한때 혁명을 촉발한 성문.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-gates"
+  },
+  "sorcerous-sundries": {
+    nameKo: "소서러스 선드리즈 (마법 잡화점)",
+    nameEn: "Sorcerous Sundries",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "소서러스 선드리즈는 발더스 게이트 히프사이드 구역의 유명한 마법 상점으로, 스톰쇼어 거리가 남쪽으로 꺾이는 멀스 레스트 광장에 위치했다. 주변 건물 사이에서 쉽게 알아볼 수 있는 키 크고 둥근 건물로, 다색 스테인드글라스의 독특한 돔 지붕이 특징이었다.",
+    features: [
+      "스테인드글라스 돔을 통해 빛이 들어오면 내부에 무지개로 빛남",
+      "비전 보호 기호가 새겨진 호화 가구, 양탄자, 비단 커튼으로 1층 장식",
+      "마법 아이템, 두루마리, 완드, 마법 부여 탄약 판매"
+    ],
+    inhabitants: "14세기 DR 동안 가게를 운영한 노마법사 할바저 드린. 12 gp에 곰팡이 방지 및 습기 제거 주문 서비스를 제공했다. 손님은 1층에만 출입이 허용되었다.",
+    atmosphere: "신비롭고 매혹적인 곳. 스테인드글라스 돔의 무지개 빛, 비단 커튼의 비전 기호, 마법적 경이의 약속이 경이와 약간의 위험의 분위기를 자아냈다. 대가를 치르면 비전에 접근할 수 있는 곳.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-gray-harbor"
+  },
+  "counting-house": {
+    nameKo: "카운팅 하우스 (금고)",
+    nameEn: "Counting House",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "카운팅 하우스는 발더스 게이트의 교역과 사업의 중심지로, 은행이자 환전소 역할을 했다. 그레이 하버가 내려다보이는 더 스팁스 해안가에 위치했으며, 도시의 경제적 성공에 크게 기여한 주요 시설 중 하나였다.",
+    features: [
+      "촘촘한 벽과 완전히 창문 없는 상위 2개 층을 가진 요새 같은 건물",
+      "지하 원통형 층이 금고로 사용, 석재 골렘이 경비",
+      "총관 카릭 일페시엔트가 설립"
+    ],
+    inhabitants: "은행원, 환전상, 부유한 예금주. 석재 골렘이 가장 깊은 복도를 순찰하며 경비. 패트리아르 가문들이 그 난공불락의 금고에 재산을 맡겼다.",
+    atmosphere: "위압적이고 비밀스러운 곳. 창문 없는 상층부와 골렘이 지키는 지하 금고가 절대적 보안과 기밀의 이미지를 투사했다. 거대한 재산이 거리 아래 깊숙이 저장되어, 돌벽과 마법 파수꾼 모두에 의해 보호받는 곳.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-economy"
+  },
+  "hissing-stones": {
+    nameKo: "히싱 스톤즈 (쉬쉬대는 돌 목욕탕)",
+    nameEn: "Hissing Stones",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "히싱 스톤즈 목욕탕은 15세기 DR 후반 기준 발더스 게이트에서 가장 오래된 건물 중 하나로, 체센타 양식으로 지어졌다. 하부 도시 시타워 구역에 위치했으며, 도시에서 가장 안전하고 기밀성 높은 만남의 장소로 명성을 누렸다.",
+    features: [
+      "다양한 발두리아 권력 집단 사이에서 기밀과 중립성으로 탁월한 평판",
+      "정치 파벌, 길드 대표, 기타 유력 인사 간의 비밀 회동을 빈번히 주최",
+      "체센타 양식의 건축물"
+    ],
+    inhabitants: "탁월한 경영 능력의 달의 요정 메릴린 알라리르가 소유·운영. 직원에게 뇌물에 거의 넘어가지 않을 정도로 충분한 급여를 지급. 고객에는 정치인, 길드 지도자, 민감한 논의를 위한 중립지가 필요한 모든 이가 포함.",
+    atmosphere: "고요하고, 비밀스러우며, 표면 아래에서는 정치적으로 긴장된 곳. 증기와 따뜻한 물이 편안한 환경을 만들지만, 차분한 외관 아래에서 발더스 게이트의 가장 중대한 거래와 협상이 낮은 목소리로 이루어졌다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-guild"
+  },
+  "low-lantern": {
+    nameKo: "로우 랜턴 (낮은 등불)",
+    nameEn: "Low Lantern",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "로우 랜턴은 그레이 하버에 영구 정박한 개조 3마스트 선박으로, 연회장, 주점, 도박장으로 사용되었다. 한때 잘 관리된 항해 선박이었으나, 1482 DR경에는 한쪽으로 기울어지고 자주 물이 새는 상태로, 항구 유람을 중단했다.",
+    features: [
+      "1366 DR경에는 밤에 항구를 유람했으나, 이후 정박 상태로 영구 전환",
+      "뱃머리의 등불이 으스스한 녹색 빛을 비추며 주점이 열려 있음을 알림",
+      "선체 판자가 럼주에 흠뻑 젖어 있음. 종종 은밀한 모임에 사용"
+    ],
+    inhabitants: "도박꾼, 술꾼, 불법 사업을 하는 자들, 그리고 오락이나 비밀을 찾는 다양한 고객층. 육상 주점보다 배 위의 분위기를 선호하는 뱃사람과 여행자.",
+    atmosphere: "음침하고, 분위기 있으며, 약간 위험한 곳. 기울어진 럼주 절인 배와 녹색 등불이 으스스하고 낭만적인 배경을 만들어, 위험의 날이 선 오락을 선호하는 이들을 끌어들였다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-flaming-fist"
+  },
+  "insight-park": {
+    nameKo: "인사이트 공원 (통찰의 공원)",
+    nameEn: "Insight Park",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "인사이트 공원은 발더스 게이트 하부 도시 브램프턴 구역의 공공 공원으로, 15세기 DR 중반에 마법으로 만들어졌다. 1452 DR, 방패 드워프 드루이드 토리메쉬가 수십 년의 모험에서 돌아와 폐품 매립지를 사들인 뒤 드루이드 마법으로 가난한 시민들을 위한 울창한 미니 숲을 만들었다.",
+    features: [
+      "신비로운 드로잉 트리 — 수액을 적절히 처리하여 조심스럽게 채취하면 피 같은 수액이 미래의 장면을 보여주는 정체불명의 나무",
+      "토리메쉬가 특별히 가난한 발두리아인들이 자연의 아름다움을 감상할 수 있도록 공원을 만듦",
+      "드루이드 마법으로 창조된 도시 속 숲"
+    ],
+    inhabitants: "하부 도시 서민, 특히 다른 녹지 공간에 접근할 수 없는 가난한 이들. 토리메쉬가 공원 관리인 역할. 드로잉 트리에서 미래를 엿보려는 방문객.",
+    atmosphere: "브램프턴의 도시적 거칠음 속 고요한 오아시스. 공원을 만든 드루이드 마법이 초자연적 느낌을 부여하며, 신비로운 드로잉 트리가 소박한 이웃의 공원에 예언적 경이의 요소를 더한다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-gates"
+  },
+  "blushing-mermaid": {
+    nameKo: "블러싱 머메이드 (붉어진 인어 주점)",
+    nameEn: "Blushing Mermaid",
+    category: "lower",
+    categoryKo: "하부 도시 (Lower City)",
+    description: "블러싱 머메이드는 발더스 게이트 히프사이드 구역 빈들 거리에 위치한 유명한 하층 주점이었다. 소드 코스트 전역에서 불법 사업을 하는 자들의 만남의 장소로 알려져 있으며, 시끄럽고 싸움이 잦은 시설이었다.",
+    features: [
+      "무너질 것 같은 길고 낮은 건물, 마구간과 부속 건물에 둘러싸임",
+      "최소 4층의 지하실 (추가 층이 있다는 소문)",
+      "로비 천장에 대금을 치르지 않은 손님들의 20개 이상의 검게 마른 잘린 손이 매달린 실물 크기 인어 조각"
+    ],
+    inhabitants: "발더스 게이트에서 활동하는 거의 모든 불법 조직의 대표가 건물 어딘가에서 발견될 수 있었다. 범죄자, 밀수꾼, 장물아비, 그리고 상대적 익명성 속에서 수상한 거래를 하려는 모든 이.",
+    atmosphere: "위험하고, 시끄럽고, 무법적인 곳. 싸움이 일상이고, 잘린 손이 경고로 매달려 있으며, 지하 지하실이 비밀 속의 비밀을 품고 있는 곳. 이 평판 때문에 — 또는 이 평판 덕분에 — 블러싱 머메이드는 소드 코스트에서 가장 유명한 주점 중 하나였다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-gray-harbor"
+  },
+
+  // ====== OUTER CITY ======
+  "blackgate": {
+    nameKo: "블랙게이트 (흑문 구역)",
+    nameEn: "Blackgate",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "블랙게이트는 상부 도시 북쪽의 흑룡 문(Black Dragon Gate) 바깥에 형성된 유일한 외곽 도시 구역이었다. 워터딥 방면 북쪽으로 이어지는 교역로 주변에 형성되어, 주로 교역로를 따라 물건을 운반하는 상인과 대상인들의 대기 장소 역할을 했다.",
+    features: [
+      "흑룡 문이 블랙게이트의 빈민가와 상부 도시를 분리",
+      "가린모르 마구간 및 동물원이 이 지역에서 영업 — 아마도 지역 최대의 동물 취급 사업",
+      "샤르의 뱀들 갱단이 15세기 DR 후반 가장 유명한 범죄 조직"
+    ],
+    inhabitants: "상인, 대상인, 동물 조련사, 샤르의 뱀들 갱단. 도시 입성을 기다리는 과객들.",
+    atmosphere: "과도기적이고 거친 곳. 대상과 상인의 끊임없는 흐름으로 정의되는 구역으로, 그러한 상업 활동 주변에 필연적으로 모이는 범죄 요소가 있다. 흑룡 문 너머로 보이는 상부 도시와의 극명한 대조.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "stonyeyes": {
+    nameKo: "스토니아이즈 (돌눈 구역)",
+    nameEn: "Stonyeyes",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "스토니아이즈는 하부 도시 동쪽 바실리스크 문 바로 바깥에 위치한 외곽 도시 구역이었다. 대규모 반오크 공동체의 거주지이며, 대상에서 물품을 운반하는 주요 거점이었다.",
+    features: [
+      "성벽 내에 짐승이 허용되지 않아 반오크들이 짐꾼으로 일함",
+      "가린모르 마구간, 햄혹스 도축장 (악취로 악명), 석공·석수·경조각 길드('돌머리') 소재",
+      "죽은 삼신 교단도 이곳에 기반을 둠"
+    ],
+    inhabitants: "반오크 짐꾼, 석공, 도축업자, 피의 손 갱단 (길드 산하 나인핑거스 운영). 내부 도시가 의존하는 중노동을 수행하는 노동자 계급 인구.",
+    atmosphere: "거칠고, 근면하며, 소외된 곳. 발더스 게이트를 유지하는 중노동이 도시 자체의 입성을 거부당한 이들에 의해 수행되는 구역. 도축장 냄새와 석재 절단 소리가 일상을 정의했다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "norchapel": {
+    nameKo: "노채플 (북예배당 구역)",
+    nameEn: "Norchapel",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "노채플은 바실리스크 문 너머 상당한 거리에 위치한 외곽 도시의 조용한 구역이었다. 건물들이 성벽으로 둘러싸인 리틀 칼림샨 구역을 감싸며, 스토니아이즈 및 위트킵과 불명확한 경계를 공유했다.",
+    features: [
+      "외곽 도시 구역 중 가장 조용한 곳으로 알려짐",
+      "외곽 도시 주민과 화염 주먹단 병사 간 충돌이 하부 도시 및 외곽 도시 전역에 폭동을 촉발한 곳",
+      "리틀 칼림샨의 성벽 옆에 위치한 공동주택 구역"
+    ],
+    inhabitants: "노동자, 범죄 갱단원, 일반 시민. 대부분의 외곽 도시 구역과 마찬가지로, 성벽 안에서 살 여유가 없는 이들이 주로 거주.",
+    atmosphere: "외곽 도시 기준으로 조용하고 눈에 띄지 않는 곳. 리틀 칼림샨 성벽 그늘에 존재하는 공동주택 주거 지역으로, 주민과 도시 당국 사이의 긴장에 의해 가끔 뒤흔들렸다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "little-calimshan": {
+    nameKo: "리틀 칼림샨 (작은 칼림샨)",
+    nameEn: "Little Calimshan",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "리틀 칼림샨은 외곽 도시의 성벽으로 둘러싸인 구역으로, 발더스 게이트 나머지와는 디자인과 분위기에서 뚜렷이 다른 소란스럽고 혼돈스러운 거류지였다. 15세기 DR 칼림샨의 전쟁을 피해 온 칼리시트 난민들이 현지 칼리시트 여관주인과 자금을 모아 새 주거지를 지으면서 설립되었다.",
+    features: [
+      "여러 성벽 '드루닥'(구역)으로 구획된 칼리시트 '사반' 양식 설계, 15피트 높이 성벽과 첨탑",
+      "칼림 보석 상점 (도시 최고 보석상이자 길드 위장 사업) 소재",
+      "학습의 등불 마법 학교 (칼리시트 전통, 입학 제한) 소재"
+    ],
+    inhabitants: "알제도어를 자랑스럽게 말하고 날씨에 상관없이 전통 복장을 입는 칼리시트 난민과 그 후손. 보석상, 마법사, 고향과의 교역로를 유지하는 상인. 공동체는 폐쇄적이었으며 구역을 고립된 요새처럼 다루었다.",
+    atmosphere: "이국적이고, 활기차며, 의도적으로 분리된 곳. 첨탑, 칼리시트 건축, 알제도어가 소드 코스트에 칼림샨의 주머니를 만들어냈다. 성벽 거류지는 주민들의 문화적 자부심과 한때 그들을 거부한 도시에 대한 불신을 모두 반영했다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "whitkeep": {
+    nameKo: "위트킵 (백성 구역)",
+    nameEn: "Whitkeep",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "위트킵은 노채플 및 소우즈 풋과 이웃한 외곽 도시 구역이었으나, 정확한 경계는 정기적으로 논란이 되었다. 도시 내에서 양철장이로 일하는 상당한 규모의 노움 공동체가 거주했다.",
+    features: [
+      "위트킵 호스텔 — 급진적 성향의 인물들을 끌어들이는 대형 저택",
+      "간탈의 용사들 갱단이 주민들에게 정기적으로 도둑질을 했으나, 여성은 대상으로 삼지 않는 것이 특징",
+      "노움 양철장이 공동체"
+    ],
+    inhabitants: "양철장이 노움 공동체, 일반 노동자, 급진적 성향의 위트킵 호스텔 거주자. 간탈의 용사들이 구역 주민을 약탈했다.",
+    atmosphere: "노동자 계급이면서 다소 특이한 곳, 근면한 노움 공동체를 반영. 양철 세공과 급진적 사상이 끊임없는 갱 범죄의 위협과 함께 공존하는 구역.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "twin-songs": {
+    nameKo: "트윈 송즈 (쌍가 구역)",
+    nameEn: "Twin Songs",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "트윈 송즈는 웜즈 크로싱 다리 북쪽에 위치한 외곽 도시 구역이었다. 거의 모든 신에게 바쳐진 소신전, 제단, 성소가 광범위하게 모여 있어 페어룬 전체에서 가장 종교적으로 다양한 곳 중 하나였다.",
+    features: [
+      "베인과 바알 같은 사악한 신에게 바친 제단까지 포용하며 모든 신앙을 수용",
+      "마지막 희망의 교회 — 절망하고 희망 없는 이들을 위한 비종파 성소",
+      "'신앙 없는 자들' 갱단 — 두목 스트레이트스틱이 이끌며, 강을 따라 밀수 작전도 운영"
+    ],
+    inhabitants: "거의 모든 신앙의 성직자, 순례자, 마지막 희망의 교회에서 피난처를 찾는 궁핍한 이들, 밀수꾼을 겸하는 신앙 없는 자들 갱단원.",
+    atmosphere: "절충적이고 영적으로 혼돈스러운 곳. 십여 가지 다른 신앙의 향이 공기 중에 뒤섞이고, 선한 신의 성소에서 불과 몇 걸음이면 어둠의 제단에 닿는 곳. 관용이 극단으로 치달아 성스러운 것과 불경스러운 것이 자유로이 섞이는 구역.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "rivington": {
+    nameKo: "리빙턴",
+    nameEn: "Rivington",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "리빙턴은 발더스 게이트의 최남단 구역으로, 치온타르 강 남안, 웜즈 크로싱 건너편에 위치한 유일한 외곽 도시 지역이었다. 교역로가 이곳에서 남쪽으로 음모의 땅과 칼림샨까지 이어졌다.",
+    features: [
+      "교역로를 따라 남쪽으로의 관문 역할",
+      "밀수꾼들이 강을 통해 불법 물품을 도시로 반입, 정문을 우회하는 인기 장소",
+      "리빙턴 쥐떼 갱단이 출몰"
+    ],
+    inhabitants: "남쪽으로 향하는 여행자, 밀수꾼, 리빙턴 쥐떼 갱단원, 강으로 분리된 발두리아 사회의 변두리에 사는 일반 주민.",
+    atmosphere: "외지고 거친 곳. 치온타르 강에 의해 나머지 발더스 게이트와 분리된 리빙턴은 구역이라기보다 중간 기착지 같은 느낌이었다. 도시 권위와의 거리가 밀수꾼과 범죄자들의 자연스러운 안식처가 되게 했다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "tumbledown": {
+    nameKo: "텀블다운 (무너진 구역)",
+    nameEn: "Tumbledown",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "텀블다운은 외곽 도시의 음울하고 안개 자욱한 구역으로, 하부 도시 남동쪽 클리프게이트 너머에 위치했다. 동쪽의 거대한 언덕으로 바람이 차단되어 치온타르 강에서 올라오는 안개와 운무에 자주 뒤덮였으며, 유령이 나온다고 여겨졌다.",
+    features: [
+      "살해당한 자르(Szarr) 상인 가문의 옛 저택 터에 건설 — 라이벌 가문이 가문 전원을 살해하고 재산을 불태움",
+      "자르 가문의 유령이 수년간 구역을 떠돌았다고 전해짐",
+      "절벽 묘지와 '발두란이 바다를 바라보다' 석상 소재"
+    ],
+    inhabitants: "발더스 게이트에서 가장 가난한 주민, 묘지 노동자, 그리고 간혹 나타나는 유령. 자르 가문의 비극적 죽음이 구역에 초자연적 흔적을 남겼다.",
+    atmosphere: "으스스하고, 안개 자욱하며, 유령이 나오는 곳. 끊이지 않는 안개, 유령 전설, 도시 최대 묘지와의 근접성이 텀블다운에 독특하게 불안한 분위기를 부여했다. 죽은 자가 산 자보다 더 존재감 있는 구역.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "wyrms-crossing": {
+    nameKo: "웜즈 크로싱 / 웜즈 록",
+    nameEn: "Wyrm's Crossing / Wyrm's Rock",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "웜즈 크로싱은 교역로를 따라 치온타르 강을 가로지르는 놀라운 이중 다리 구조물이었다. 대부분의 다리와 달리 수많은 건축물이 들어서 있어 외곽 도시의 한 구역으로 간주되었다. 두 개의 석조 다리가 강 한가운데 솟은 거대한 화염 주먹단 섬 요새, 웜즈 록을 통해 연결되었다.",
+    features: [
+      "웜즈 록 — 빗물과 강물에 매끄럽게 닳은 1피트 두께 화강암 벽, 수면을 향한 화살 구멍",
+      "바다로부터 도시를 보호하는 군사 보루이자 통행세 징수소 (교역로 북행 여행자 1인당 5 cp)",
+      "다리 위에 상점과 건물이 들어선 독특한 다리-정착지"
+    ],
+    inhabitants: "웜즈 록에 주둔한 화염 주먹단 병사, 통행세 징수원, 다리를 건너는 상인과 여행자, 다리 위 상점 및 건물의 주민.",
+    atmosphere: "전략적이고 분주한 곳. 군사적 경계가 상업 활동과 만나는 독특한 다리-정착지로, 중앙의 위압적인 웜즈 록 요새가 지배한다. 남쪽에서 오는 모든 방문자가 화염 주먹단의 감시하에 통행세를 내며 이곳을 통과했다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "cliffside-cemetery": {
+    nameKo: "절벽 묘지 (클리프사이드 묘지)",
+    nameEn: "Cliffside Cemetery",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "절벽 묘지는 발더스 게이트에서 가장 큰 묘지로, 텀블다운 구역의 더스트호크 힐 바로 서쪽에 위치했다. 조상 납골당이나 신전 바닥 아래에 안치될 만큼 부유하거나 유력하지 않은 발두리아인들의 마지막 안식처였다.",
+    features: [
+      "수세기에 걸친 시민, 상인, 심지어 해적의 유해가 안치된 묘비, 무덤, 납골당, 영묘의 미로",
+      "1492 DR 기준 무덤파기꾼 일당(Gravemakers)이 도굴꾼, 사령술사, 미르쿨 추종자로부터 망자를 보호",
+      "묘지 중앙의 자르 저택이 무덤파기꾼의 본부로 사용"
+    ],
+    inhabitants: "묘지 노동자, 무덤파기꾼 일당, 주기적으로 무덤에서 일어나는 언데드, 수세기에 걸친 발두리아 역사의 광대한 매장 인구.",
+    atmosphere: "엄숙하고, 위험하며, 미로 같은 곳. 강의 안개가 수많은 무덤의 으스스한 침묵과 뒤섞인다. 언데드 출현과 사령술 간섭의 끊임없는 위협이 이 묘지를 산 자도 죽은 자 사이에서 경계를 늦출 수 없는 곳으로 만들었다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-citizenry"
+  },
+  "dusthawk-hill": {
+    nameKo: "더스트호크 힐 (먼지매 언덕)",
+    nameEn: "Dusthawk Hill",
+    category: "outer",
+    categoryKo: "외곽 도시 (Outer City)",
+    description: "더스트호크 힐은 치온타르 강 북안, 발더스 게이트 동쪽에 위치한 높은 화강암 언덕이었다. 1492 DR경에는 거의 사방이 외곽 도시의 팽창으로 둘러싸여 있었다. 치온타르 먼지매의 마지막 둥지 중 하나로 이 이름을 얻었다.",
+    features: [
+      "외곽 도시 빈민가 위로 높이 솟은 노란 화강암의 가파른 절벽",
+      "언덕 아래 바다 동굴에 늑대인간 소굴이 있다는 소문",
+      "줄어드는 먼지매 개체수 보호를 위해 보호 사유지로 선언 — 외곽 도시 주민들의 큰 불만"
+    ],
+    inhabitants: "멸종 위기의 치온타르 먼지매와 아래 바다 동굴의 늑대인간(추정). 외곽 도시 주민이 언덕을 둘러싸지만 보호 구역 출입은 금지. 밀수꾼이 이 지역을 브램프턴으로의 경로로 이용.",
+    atmosphere: "야생적이고 논쟁의 여지가 있는 곳. 도시의 팽창 속에 남은 드문 길들여지지 않은 자연의 주머니로, 멸종 위기 조류의 이익이 도시 최빈곤 주민의 필요보다 우선시되는 곳. 노란 화강암 절벽이 빈민가 위로 우뚝 솟아 도시의 불평등한 대우를 상기시킨다.",
+    gazetteerLink: "DIA-bg-gazetteer.html#bg-dusthawk"
+  }
+};
+
+// ── Category helpers ──
+function getCatBadge(cat) {
+  const m = { upper: 'badge-upper', lower: 'badge-lower', outer: 'badge-outer' };
+  return m[cat] || 'badge-lower';
+}
+function getCatLabel(cat) {
+  const m = { upper: '상부 도시', lower: '하부 도시', outer: '외곽 도시' };
+  return m[cat] || '';
+}
+
+// ── Panel Logic ──
+let currentLoc = null;
+
+function openPanel(locId) {
+  const loc = locations[locId];
+  if (!loc) return;
+
+  currentLoc = locId;
+
+  // Mark active zone/pin
+  document.querySelectorAll('.zone, .pin').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll(`[data-loc="${locId}"]`).forEach(el => el.classList.add('active'));
+
+  // Build panel content
+  const badge = document.getElementById('panelBadge');
+  badge.className = 'panel-category-badge ' + getCatBadge(loc.category);
+  badge.textContent = loc.categoryKo;
+
+  let featuresHtml = '';
+  if (loc.features && loc.features.length) {
+    featuresHtml = '<ul>' + loc.features.map(f => `<li>${f}</li>`).join('') + '</ul>';
+  }
+
+  let linkHtml = '';
+  if (loc.gazetteerLink) {
+    linkHtml = `<a href="${loc.gazetteerLink}" class="panel-link-btn">&#128214; 지명사전에서 보기 (Gazetteer)</a>`;
+  }
+
+  document.getElementById('panelContent').innerHTML = `
+    <div class="panel-title-ko">${loc.nameKo}</div>
+    <div class="panel-title-en">${loc.nameEn}</div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">설명</div>
+      <p>${loc.description}</p>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">주요 특징</div>
+      ${featuresHtml}
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">주민 / 이용자</div>
+      <p>${loc.inhabitants}</p>
+    </div>
+
+    <div class="panel-section">
+      <div class="panel-section-title">분위기</div>
+      <p>${loc.atmosphere}</p>
+    </div>
+
+    ${linkHtml}
+  `;
+
+  // Open panel
+  document.getElementById('encyclopediaPanel').classList.add('open');
+  document.getElementById('panelOverlay').style.display = 'block';
+  document.getElementById('encyclopediaPanel').scrollTop = 0;
+}
+
+function closePanel() {
+  document.getElementById('encyclopediaPanel').classList.remove('open');
+  document.getElementById('panelOverlay').style.display = 'none';
+  document.querySelectorAll('.zone, .pin').forEach(el => el.classList.remove('active'));
+  currentLoc = null;
+}
+
+// Close on Escape
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+// ── Build Cards Grid ──
+function buildCards() {
+  const grid = document.getElementById('cardsGrid');
+  let html = '';
+  const order = ['upper', 'lower', 'outer'];
+
+  // Sort by category order then by name
+  const entries = Object.entries(locations).sort((a, b) => {
+    const ci = order.indexOf(a[1].category) - order.indexOf(b[1].category);
+    if (ci !== 0) return ci;
+    return a[1].nameKo.localeCompare(b[1].nameKo, 'ko');
+  });
+
+  for (const [id, loc] of entries) {
+    const shortDesc = loc.description.length > 120 ? loc.description.substring(0, 120) + '...' : loc.description;
+    html += `
+      <div class="loc-card" data-loc="${id}" data-cat="${loc.category}"
+           data-search="${loc.nameKo} ${loc.nameEn}".toLowerCase()
+           onclick="openPanel('${id}')">
+        <span class="loc-card-cat ${getCatBadge(loc.category)}">${getCatLabel(loc.category)}</span>
+        <div class="loc-card-name">${loc.nameKo}</div>
+        <div class="loc-card-en">${loc.nameEn}</div>
+        <div class="loc-card-desc">${shortDesc}</div>
+      </div>
+    `;
+  }
+  grid.innerHTML = html;
+  updateResultCount();
+}
+
+// ── Filtering ──
+let activeTab = 'all';
+
+function setTab(cat) {
+  activeTab = cat;
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.cat === cat);
+  });
+  filterLocations();
+}
+
+function filterLocations() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.loc-card');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const cat = card.dataset.cat;
+    const locId = card.dataset.loc;
+    const loc = locations[locId];
+    const searchText = (loc.nameKo + ' ' + loc.nameEn + ' ' + loc.description).toLowerCase();
+
+    const matchCat = activeTab === 'all' || cat === activeTab;
+    const matchSearch = !query || searchText.includes(query);
+
+    if (matchCat && matchSearch) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  // Also highlight/dim zones on map
+  document.querySelectorAll('.zone, .pin').forEach(el => {
+    const locId = el.dataset.loc;
+    const loc = locations[locId];
+    if (!loc) { el.style.opacity = '1'; return; }
+    const cat = loc.category;
+    const searchText = (loc.nameKo + ' ' + loc.nameEn).toLowerCase();
+    const matchCat = activeTab === 'all' || cat === activeTab;
+    const matchSearch = !query || searchText.includes(query);
+    el.style.opacity = (matchCat && matchSearch) ? '1' : '0.2';
+  });
+
+  document.getElementById('resultCount').textContent = `${visible}개 장소`;
+}
+
+function updateResultCount() {
+  const visible = document.querySelectorAll('.loc-card:not(.hidden)').length;
+  document.getElementById('resultCount').textContent = `${visible}개 장소`;
+}
+
+// Init
+buildCards();
+</script>
+
+</body>
+</html>
