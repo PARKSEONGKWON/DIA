@@ -185,57 +185,18 @@ body {
 }
 
 /* ── Zone overlays ── */
-.zone {
-  position: absolute;
-  cursor: pointer;
-  border: 2px solid transparent;
-  border-radius: 6px;
-  transition: all 0.25s;
-}
 
-.zone:hover, .zone.active {
-  border-color: rgba(212,168,67,0.7);
-  background: rgba(212,168,67,0.15);
-  box-shadow: 0 0 20px rgba(212,168,67,0.3);
-}
 
-.zone.active {
-  border-color: var(--gold);
-  background: rgba(212,168,67,0.25);
-  box-shadow: 0 0 30px rgba(212,168,67,0.5);
-}
+.zone:hover, 
 
-.zone .zone-label {
-  display: none;
-  position: absolute;
-  bottom: calc(100% + 6px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20,16,10,0.95);
-  color: var(--gold);
-  padding: 5px 12px;
-  border-radius: 4px;
-  font-size: 12px;
-  white-space: nowrap;
-  pointer-events: none;
-  font-weight: 700;
-  z-index: 20;
-  border: 1px solid var(--border);
-}
 
-.zone:hover .zone-label { display: block; }
+
+.zone 
+
+.zone:hover 
 
 /* ── Pin markers for specific landmarks ── */
-.pin {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  margin-left: -9px;
-  margin-top: -9px;
-  cursor: pointer;
-  z-index: 15;
-  transition: all 0.25s;
-}
+
 
 .pin-dot {
   width: 12px;
@@ -254,25 +215,9 @@ body {
   transform: scale(1.3);
 }
 
-.pin .zone-label {
-  display: none;
-  position: absolute;
-  bottom: calc(100% + 4px);
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20,16,10,0.95);
-  color: var(--gold);
-  padding: 4px 10px;
-  border-radius: 4px;
-  font-size: 11px;
-  white-space: nowrap;
-  pointer-events: none;
-  font-weight: 700;
-  z-index: 20;
-  border: 1px solid var(--border);
-}
+.pin 
 
-.pin:hover .zone-label { display: block; }
+.pin:hover 
 
 /* ── Encyclopedia Panel ── */
 .panel-overlay {
@@ -504,6 +449,54 @@ body {
   .cards-grid { grid-template-columns: 1fr; }
   .panel-title-ko { font-size: 1.2em; }
 }
+
+.pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: rgba(180, 50, 30, 0.9);
+  border: 2px solid rgba(255,215,0,0.6);
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 5;
+}
+.pin:hover {
+  transform: translate(-50%, -50%) scale(1.5);
+  background: #c0392b;
+  border-color: gold;
+  box-shadow: 0 0 12px rgba(255,215,0,0.6);
+  z-index: 10;
+}
+.pin.active {
+  background: gold;
+  border-color: #fff;
+  box-shadow: 0 0 16px rgba(255,215,0,0.8);
+  transform: translate(-50%, -50%) scale(1.5);
+  z-index: 10;
+}
+.pin .pin-label {
+  display: none;
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20,15,10,0.95);
+  color: #f5c518;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+  border: 1px solid rgba(255,215,0,0.3);
+  z-index: 20;
+}
+.pin:hover .pin-label { display: block; }
+.pin.cat-upper { background: rgba(100, 50, 150, 0.85); }
+.pin.cat-lower { background: rgba(180, 50, 30, 0.85); }
+.pin.cat-outer { background: rgba(40, 120, 60, 0.85); }
+
 </style>
 </head>
 <body>
@@ -536,131 +529,46 @@ body {
   <div class="map-area">
     <div class="map-wrap" id="mapWrap">
       <img src="bg-neighborhoods-map.webp" alt="발더스 게이트 지역 지도">
-
-      <!-- Upper City zones -->
-      <div class="zone" data-loc="citadel-streets" style="left:18%;top:22%;width:14%;height:18%;" onclick="openPanel('citadel-streets')">
-        <span class="zone-label">경비대 성채 구역</span>
+      <div class="map-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;">
+        <!-- Upper City -->
+        <div class="pin cat-upper" data-loc="the-wide" style="left:36%;top:38%;" onclick="openPanel('the-wide')"><span class="pin-label">광장 (The Wide)</span></div>
+        <div class="pin cat-upper" data-loc="high-hall" style="left:32%;top:32%;" onclick="openPanel('high-hall')"><span class="pin-label">하이 홀 (High Hall)</span></div>
+        <div class="pin cat-upper" data-loc="watch-citadel" style="left:20%;top:24%;" onclick="openPanel('watch-citadel')"><span class="pin-label">경비대 시타델</span></div>
+        <div class="pin cat-upper" data-loc="manorborn" style="left:26%;top:20%;" onclick="openPanel('manorborn')"><span class="pin-label">마노르본</span></div>
+        <div class="pin cat-upper" data-loc="temples-district" style="left:30%;top:28%;" onclick="openPanel('temples-district')"><span class="pin-label">신전 구역</span></div>
+        <div class="pin cat-upper" data-loc="high-house-of-wonders" style="left:34%;top:30%;" onclick="openPanel('high-house-of-wonders')"><span class="pin-label">경이의 대전</span></div>
+        <div class="pin cat-upper" data-loc="ladys-hall" style="left:28%;top:24%;" onclick="openPanel('ladys-hall')"><span class="pin-label">레이디스 홀</span></div>
+        <!-- Lower City -->
+        <div class="pin cat-lower" data-loc="bloomridge" style="left:38%;top:30%;" onclick="openPanel('bloomridge')"><span class="pin-label">블룸리지</span></div>
+        <div class="pin cat-lower" data-loc="eastway" style="left:24%;top:42%;" onclick="openPanel('eastway')"><span class="pin-label">이스트웨이</span></div>
+        <div class="pin cat-lower" data-loc="heapside" style="left:34%;top:46%;" onclick="openPanel('heapside')"><span class="pin-label">힙사이드</span></div>
+        <div class="pin cat-lower" data-loc="the-steeps" style="left:12%;top:46%;" onclick="openPanel('the-steeps')"><span class="pin-label">스팁스</span></div>
+        <div class="pin cat-lower" data-loc="brampton" style="left:46%;top:42%;" onclick="openPanel('brampton')"><span class="pin-label">브램프턴</span></div>
+        <div class="pin cat-lower" data-loc="seatower" style="left:14%;top:62%;" onclick="openPanel('seatower')"><span class="pin-label">시타워</span></div>
+        <div class="pin cat-lower" data-loc="gray-harbor" style="left:28%;top:58%;" onclick="openPanel('gray-harbor')"><span class="pin-label">그레이 항구</span></div>
+        <div class="pin cat-lower" data-loc="elfsong-tavern" style="left:30%;top:44%;" onclick="openPanel('elfsong-tavern')"><span class="pin-label">엘프송 선술집</span></div>
+        <div class="pin cat-lower" data-loc="basilisk-gate" style="left:50%;top:38%;" onclick="openPanel('basilisk-gate')"><span class="pin-label">바실리스크 문</span></div>
+        <div class="pin cat-lower" data-loc="baldurs-gate-gate" style="left:18%;top:40%;" onclick="openPanel('baldurs-gate-gate')"><span class="pin-label">발두르의 문</span></div>
+        <div class="pin cat-lower" data-loc="sorcerous-sundries" style="left:38%;top:50%;" onclick="openPanel('sorcerous-sundries')"><span class="pin-label">마법 잡화점</span></div>
+        <div class="pin cat-lower" data-loc="counting-house" style="left:22%;top:52%;" onclick="openPanel('counting-house')"><span class="pin-label">금고</span></div>
+        <div class="pin cat-lower" data-loc="hissing-stones" style="left:32%;top:52%;" onclick="openPanel('hissing-stones')"><span class="pin-label">쉬쉬거리는 돌</span></div>
+        <div class="pin cat-lower" data-loc="low-lantern" style="left:24%;top:60%;" onclick="openPanel('low-lantern')"><span class="pin-label">낮은 등불호</span></div>
+        <div class="pin cat-lower" data-loc="insight-park" style="left:42%;top:46%;" onclick="openPanel('insight-park')"><span class="pin-label">인사이트 공원</span></div>
+        <div class="pin cat-lower" data-loc="blushing-mermaid" style="left:40%;top:42%;" onclick="openPanel('blushing-mermaid')"><span class="pin-label">붉어진 인어</span></div>
+        <div class="pin cat-lower" data-loc="dusthawk-hill" style="left:58%;top:34%;" onclick="openPanel('dusthawk-hill')"><span class="pin-label">더스트호크 언덕</span></div>
+        <!-- Outer City -->
+        <div class="pin cat-outer" data-loc="blackgate" style="left:8%;top:10%;" onclick="openPanel('blackgate')"><span class="pin-label">블랙게이트</span></div>
+        <div class="pin cat-outer" data-loc="stonyeyes" style="left:8%;top:32%;" onclick="openPanel('stonyeyes')"><span class="pin-label">스토니아이즈</span></div>
+        <div class="pin cat-outer" data-loc="norchapel" style="left:18%;top:10%;" onclick="openPanel('norchapel')"><span class="pin-label">노르채플</span></div>
+        <div class="pin cat-outer" data-loc="little-calimshan" style="left:42%;top:12%;" onclick="openPanel('little-calimshan')"><span class="pin-label">리틀 칼림샨</span></div>
+        <div class="pin cat-outer" data-loc="whitkeep" style="left:56%;top:12%;" onclick="openPanel('whitkeep')"><span class="pin-label">휘트킵</span></div>
+        <div class="pin cat-outer" data-loc="twin-songs" style="left:72%;top:26%;" onclick="openPanel('twin-songs')"><span class="pin-label">트윈 송즈</span></div>
+        <div class="pin cat-outer" data-loc="rivington" style="left:76%;top:64%;" onclick="openPanel('rivington')"><span class="pin-label">리빙턴</span></div>
+        <div class="pin cat-outer" data-loc="tumbledown" style="left:86%;top:80%;" onclick="openPanel('tumbledown')"><span class="pin-label">텀블다운</span></div>
+        <div class="pin cat-outer" data-loc="wyrms-crossing" style="left:72%;top:82%;" onclick="openPanel('wyrms-crossing')"><span class="pin-label">웜즈 횡단</span></div>
+        <div class="pin cat-outer" data-loc="cliffside-cemetery" style="left:64%;top:40%;" onclick="openPanel('cliffside-cemetery')"><span class="pin-label">절벽 묘지</span></div>
       </div>
-      <div class="zone" data-loc="manorborn" style="left:24%;top:18%;width:12%;height:14%;" onclick="openPanel('manorborn')">
-        <span class="zone-label">매너본 (Manorborn)</span>
-      </div>
-      <div class="zone" data-loc="temples-district" style="left:30%;top:28%;width:10%;height:12%;" onclick="openPanel('temples-district')">
-        <span class="zone-label">신전 구역 (Temples)</span>
-      </div>
-      <div class="zone" data-loc="the-wide" style="left:35%;top:34%;width:10%;height:10%;" onclick="openPanel('the-wide')">
-        <span class="zone-label">더 와이드 (The Wide)</span>
-      </div>
-
-      <!-- Lower City zones -->
-      <div class="zone" data-loc="the-steeps" style="left:10%;top:42%;width:12%;height:16%;" onclick="openPanel('the-steeps')">
-        <span class="zone-label">더 스팁스 (The Steeps)</span>
-      </div>
-      <div class="zone" data-loc="eastway" style="left:22%;top:40%;width:10%;height:12%;" onclick="openPanel('eastway')">
-        <span class="zone-label">이스트웨이 (Eastway)</span>
-      </div>
-      <div class="zone" data-loc="heapside" style="left:32%;top:42%;width:12%;height:14%;" onclick="openPanel('heapside')">
-        <span class="zone-label">히프사이드 (Heapside)</span>
-      </div>
-      <div class="zone" data-loc="brampton" style="left:44%;top:38%;width:10%;height:12%;" onclick="openPanel('brampton')">
-        <span class="zone-label">브램프턴 (Brampton)</span>
-      </div>
-      <div class="zone" data-loc="bloomridge" style="left:37%;top:28%;width:8%;height:10%;" onclick="openPanel('bloomridge')">
-        <span class="zone-label">블룸리지 (Bloomridge)</span>
-      </div>
-      <div class="zone" data-loc="dusthawk-hill" style="left:55%;top:28%;width:14%;height:16%;" onclick="openPanel('dusthawk-hill')">
-        <span class="zone-label">더스트호크 언덕</span>
-      </div>
-      <div class="zone" data-loc="gray-harbor" style="left:20%;top:54%;width:26%;height:12%;" onclick="openPanel('gray-harbor')">
-        <span class="zone-label">그레이 하버 (Gray Harbor)</span>
-      </div>
-
-      <!-- Outer City zones -->
-      <div class="zone" data-loc="blackgate" style="left:4%;top:6%;width:12%;height:14%;" onclick="openPanel('blackgate')">
-        <span class="zone-label">블랙게이트 (Blackgate)</span>
-      </div>
-      <div class="zone" data-loc="stonyeyes" style="left:6%;top:26%;width:8%;height:16%;" onclick="openPanel('stonyeyes')">
-        <span class="zone-label">스토니아이즈 (Stonyeyes)</span>
-      </div>
-      <div class="zone" data-loc="little-calimshan" style="left:38%;top:8%;width:14%;height:12%;" onclick="openPanel('little-calimshan')">
-        <span class="zone-label">리틀 칼림샨</span>
-      </div>
-      <div class="zone" data-loc="whitkeep" style="left:53%;top:8%;width:10%;height:12%;" onclick="openPanel('whitkeep')">
-        <span class="zone-label">위트킵 (Whitkeep)</span>
-      </div>
-      <div class="zone" data-loc="norchapel" style="left:14%;top:8%;width:12%;height:10%;" onclick="openPanel('norchapel')">
-        <span class="zone-label">노채플 (Norchapel)</span>
-      </div>
-      <div class="zone" data-loc="twin-songs" style="left:70%;top:20%;width:10%;height:16%;" onclick="openPanel('twin-songs')">
-        <span class="zone-label">트윈 송즈 (Twin Songs)</span>
-      </div>
-      <div class="zone" data-loc="rivington" style="left:73%;top:60%;width:14%;height:16%;" onclick="openPanel('rivington')">
-        <span class="zone-label">리빙턴 (Rivington)</span>
-      </div>
-      <div class="zone" data-loc="tumbledown" style="left:80%;top:75%;width:16%;height:16%;" onclick="openPanel('tumbledown')">
-        <span class="zone-label">텀블다운 (Tumbledown)</span>
-      </div>
-      <div class="zone" data-loc="wyrms-crossing" style="left:68%;top:80%;width:12%;height:10%;" onclick="openPanel('wyrms-crossing')">
-        <span class="zone-label">웜즈 크로싱</span>
-      </div>
-
-      <!-- Seatower zone -->
-      <div class="zone" data-loc="seatower" style="left:14%;top:60%;width:8%;height:10%;" onclick="openPanel('seatower')">
-        <span class="zone-label">발두란의 해탑</span>
-      </div>
-
-      <!-- Pin markers for specific landmarks -->
-      <div class="pin" data-loc="elfsong-tavern" style="left:26%;top:44%;" onclick="openPanel('elfsong-tavern')" title="엘프송 주점">
-        <div class="pin-dot"></div>
-        <span class="zone-label">엘프송 주점</span>
-      </div>
-      <div class="pin" data-loc="basilisk-gate" style="left:8%;top:38%;" onclick="openPanel('basilisk-gate')" title="바실리스크 문">
-        <div class="pin-dot"></div>
-        <span class="zone-label">바실리스크 문</span>
-      </div>
-      <div class="pin" data-loc="low-lantern" style="left:25%;top:60%;" onclick="openPanel('low-lantern')" title="로우 랜턴">
-        <div class="pin-dot"></div>
-        <span class="zone-label">로우 랜턴</span>
-      </div>
-      <div class="pin" data-loc="sorcerous-sundries" style="left:36%;top:46%;" onclick="openPanel('sorcerous-sundries')" title="소서러스 선드리즈">
-        <div class="pin-dot"></div>
-        <span class="zone-label">소서러스 선드리즈</span>
-      </div>
-      <div class="pin" data-loc="counting-house" style="left:14%;top:48%;" onclick="openPanel('counting-house')" title="카운팅 하우스">
-        <div class="pin-dot"></div>
-        <span class="zone-label">카운팅 하우스</span>
-      </div>
-      <div class="pin" data-loc="hissing-stones" style="left:18%;top:55%;" onclick="openPanel('hissing-stones')" title="히싱 스톤즈">
-        <div class="pin-dot"></div>
-        <span class="zone-label">히싱 스톤즈</span>
-      </div>
-      <div class="pin" data-loc="blushing-mermaid" style="left:38%;top:48%;" onclick="openPanel('blushing-mermaid')" title="블러싱 머메이드">
-        <div class="pin-dot"></div>
-        <span class="zone-label">블러싱 머메이드</span>
-      </div>
-      <div class="pin" data-loc="high-hall" style="left:33%;top:32%;" onclick="openPanel('high-hall')" title="하이 홀">
-        <div class="pin-dot"></div>
-        <span class="zone-label">하이 홀</span>
-      </div>
-      <div class="pin" data-loc="high-house-of-wonders" style="left:31%;top:34%;" onclick="openPanel('high-house-of-wonders')" title="경이의 대전">
-        <div class="pin-dot"></div>
-        <span class="zone-label">경이의 대전</span>
-      </div>
-      <div class="pin" data-loc="baldurs-gate-gate" style="left:12%;top:36%;" onclick="openPanel('baldurs-gate-gate')" title="발두르의 문">
-        <div class="pin-dot"></div>
-        <span class="zone-label">발두르의 문 (성문)</span>
-      </div>
-      <div class="pin" data-loc="insight-park" style="left:48%;top:42%;" onclick="openPanel('insight-park')" title="인사이트 공원">
-        <div class="pin-dot"></div>
-        <span class="zone-label">인사이트 공원</span>
-      </div>
-      <div class="pin" data-loc="ladys-hall" style="left:27%;top:24%;" onclick="openPanel('ladys-hall')" title="레이디스 홀">
-        <div class="pin-dot"></div>
-        <span class="zone-label">레이디스 홀</span>
-      </div>
-      <div class="pin" data-loc="cliffside-cemetery" style="left:62%;top:36%;" onclick="openPanel('cliffside-cemetery')" title="절벽 묘지">
-        <div class="pin-dot"></div>
-        <span class="zone-label">절벽 묘지</span>
-      </div>
+    </div></div></div></div></div></div></div></div></div></div></div></div></div>
     </div>
   </div>
 </div>
@@ -1224,7 +1132,7 @@ function openPanel(locId) {
   currentLoc = locId;
 
   // Mark active zone/pin
-  document.querySelectorAll('.zone, .pin').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.pin, .pin').forEach(el => el.classList.remove('active'));
   document.querySelectorAll(`[data-loc="${locId}"]`).forEach(el => el.classList.add('active'));
 
   // Build panel content
@@ -1278,7 +1186,7 @@ function openPanel(locId) {
 function closePanel() {
   document.getElementById('encyclopediaPanel').classList.remove('open');
   document.getElementById('panelOverlay').style.display = 'none';
-  document.querySelectorAll('.zone, .pin').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.pin, .pin').forEach(el => el.classList.remove('active'));
   currentLoc = null;
 }
 
@@ -1349,7 +1257,7 @@ function filterLocations() {
   });
 
   // Also highlight/dim zones on map
-  document.querySelectorAll('.zone, .pin').forEach(el => {
+  document.querySelectorAll('.pin, .pin').forEach(el => {
     const locId = el.dataset.loc;
     const loc = locations[locId];
     if (!loc) { el.style.opacity = '1'; return; }
