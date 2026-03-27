@@ -455,6 +455,49 @@
     font-family: sans-serif;
   }
 
+
+  /* Battle Map Overlay */
+  .map-container { position: relative; }
+  .map-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+  }
+  .map-overlay a {
+    pointer-events: auto;
+  }
+  .map-pin {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: rgba(139,26,26,0.85);
+    color: #fff;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 8px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    text-decoration: none;
+    border: 1.5px solid rgba(255,255,255,0.7);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    transition: transform 0.15s, background 0.15s;
+    z-index: 2; cursor: pointer; line-height: 1;
+  }
+  .map-pin:hover {
+    transform: translate(-50%, -50%) scale(1.4);
+    background: #c0392b;
+    z-index: 3;
+  }
+  .map-pin .pin-tip {
+    display: none;
+    position: absolute; bottom: 110%; left: 50%;
+    transform: translateX(-50%);
+    background: rgba(30,20,10,0.92);
+    color: #fff; padding: 4px 10px;
+    border-radius: 4px; font-size: 11px;
+    white-space: nowrap; pointer-events: none;
+  }
+  .map-pin:hover .pin-tip { display: block; }
+
 </style>
 </head>
 <body>
@@ -587,7 +630,7 @@
 
 <p>화염 주먹단 병사들을 상대하는 가장 좋은 방법이 뇌물이라는 것은 널리 알려져 있다. 일반적인 통행료 2cp 대신 10gp 이상의 뇌물을 낼 여유가 있는 사람은 약간의 흥정 후 성문 통과를 허가받는다.</p>
 
-<div class="map-container">
+<div class="map-container" style="position:relative;">
   <div class="map-title">지도 1.1: 발더스 게이트(Map 1.1: Baldur's Gate)</div>
   <div style="position:relative;">
     <img src="map-01.001-baldursgate-2.jpg" alt="지도 1.1: 발더스 게이트(Map 1.1: Baldur's Gate)" style="width:100%;display:block;">
@@ -663,10 +706,26 @@
 
 <p>캐릭터들이 선술집 단골인 타리나를 찾는 데 도움이 필요하면, 2층으로 안내받는다("타리나와의 거래" 참조).</p>
 
-<div class="map-container">
+<div class="map-container" style="position:relative;">
   <div class="map-title">지도 1.2: 엘프송 선술집(Map 1.2: Elfsong Tavern)</div>
   <div style="position:relative;">
     <img src="map-01.002-elfsong-tavern.jpg" alt="지도 1.2: 엘프송 선술집(Map 1.2: Elfsong Tavern)" style="width:100%;display:block;">
+<div class="map-overlay">
+  <a href="#e1" class="map-pin" style="left:22%;top:48%;"><span class="pin-tip">E1. 주점</span>E1</a>
+  <a href="#e2" class="map-pin" style="left:24%;top:78%;"><span class="pin-tip">E2. 라운지</span>E2</a>
+  <a href="#e3" class="map-pin" style="left:38%;top:38%;"><span class="pin-tip">E3. 개인 식당</span>E3</a>
+  <a href="#e4" class="map-pin" style="left:12%;top:30%;"><span class="pin-tip">E4. 저장 벽감</span>E4</a>
+  <a href="#e5" class="map-pin" style="left:6%;top:44%;"><span class="pin-tip">E5. 창고</span>E5</a>
+  <a href="#e6" class="map-pin" style="left:16%;top:16%;"><span class="pin-tip">E6. 주방</span>E6</a>
+  <a href="#e7" class="map-pin" style="left:85%;top:30%;"><span class="pin-tip">E7. 2층 식당</span>E7</a>
+  <a href="#e8" class="map-pin" style="left:72%;top:72%;"><span class="pin-tip">E8. 개인 식당</span>E8</a>
+  <a href="#e9" class="map-pin" style="left:65%;top:56%;"><span class="pin-tip">E9. 고급 객실</span>E9</a>
+  <a href="#e10" class="map-pin" style="left:62%;top:38%;"><span class="pin-tip">E10. 개인 식당</span>E10</a>
+  <a href="#e11" class="map-pin" style="left:68%;top:22%;"><span class="pin-tip">E11. 대형 객실</span>E11</a>
+  <a href="#e12" class="map-pin" style="left:82%;top:18%;"><span class="pin-tip">E12. 일반 객실</span>E12</a>
+  <a href="#e13" class="map-pin" style="left:90%;top:28%;"><span class="pin-tip">E13. 앨런의 침실</span>E13</a>
+</div>
+
   </div>
 </div>
 
@@ -915,10 +974,46 @@ function toggleSidebar() {
 </script>
 
 
-<div class="map-container">
+<div class="map-container" style="position:relative;">
   <div class="map-title">지도 1.3: 죽은 삼신의 지하 감옥(Dungeon of the Dead Three)</div>
   <div style="position:relative;">
     <img src="map-01.003-dungeon-dead-three.jpg" alt="지도 1.3: 죽은 삼신의 지하 감옥(Dungeon of the Dead Three)" style="width:100%;display:block;">
+<div class="map-overlay">
+  <a href="#d1" class="map-pin" style="left:38%;top:12%;"><span class="pin-tip">D1. 안뜰</span>D1</a>
+  <a href="#d2" class="map-pin" style="left:30%;top:10%;"><span class="pin-tip">D2. 목욕탕</span>D2</a>
+  <a href="#d3" class="map-pin" style="left:27%;top:16%;"><span class="pin-tip">D3. 남쪽 마사지실</span>D3</a>
+  <a href="#d4" class="map-pin" style="left:28%;top:6%;"><span class="pin-tip">D4. 북쪽 마사지실</span>D4</a>
+  <a href="#d5" class="map-pin" style="left:7%;top:22%;"><span class="pin-tip">D5. 던전 입구</span>D5</a>
+  <a href="#d6" class="map-pin" style="left:12%;top:34%;"><span class="pin-tip">D6. 부풀어 오른 시체</span>D6</a>
+  <a href="#d7" class="map-pin" style="left:18%;top:32%;"><span class="pin-tip">D7. 바알의 제단</span>D7</a>
+  <a href="#d8" class="map-pin" style="left:7%;top:42%;"><span class="pin-tip">D8. 곰팡이 태피스트리</span>D8</a>
+  <a href="#d9" class="map-pin" style="left:20%;top:38%;"><span class="pin-tip">D9. 죽은 삼신의 문</span>D9</a>
+  <a href="#d10" class="map-pin" style="left:18%;top:48%;"><span class="pin-tip">D10. 사령입문자의 방</span>D10</a>
+  <a href="#d11" class="map-pin" style="left:12%;top:55%;"><span class="pin-tip">D11. 무너진 묘소</span>D11</a>
+  <a href="#d12" class="map-pin" style="left:24%;top:50%;"><span class="pin-tip">D12. 베인의 제단</span>D12</a>
+  <a href="#d13" class="map-pin" style="left:22%;top:64%;"><span class="pin-tip">D13. 더러운 방</span>D13</a>
+  <a href="#d14" class="map-pin" style="left:28%;top:76%;"><span class="pin-tip">D14. 수로</span>D14</a>
+  <a href="#d15" class="map-pin" style="left:8%;top:88%;"><span class="pin-tip">D15. 피투성이 감방</span>D15</a>
+  <a href="#d16" class="map-pin" style="left:4%;top:78%;"><span class="pin-tip">D16. 소각실</span>D16</a>
+  <a href="#d17" class="map-pin" style="left:32%;top:62%;"><span class="pin-tip">D17. 기름 웅덩이</span>D17</a>
+  <a href="#d18" class="map-pin" style="left:38%;top:42%;"><span class="pin-tip">D18. 미르쿨의 제단</span>D18</a>
+  <a href="#d19" class="map-pin" style="left:36%;top:82%;"><span class="pin-tip">D19.</span>D19</a>
+  <a href="#d20" class="map-pin" style="left:40%;top:84%;"><span class="pin-tip">D20.</span>D20</a>
+  <a href="#d21" class="map-pin" style="left:45%;top:84%;"><span class="pin-tip">D21.</span>D21</a>
+  <a href="#d22" class="map-pin" style="left:62%;top:70%;"><span class="pin-tip">D22.</span>D22</a>
+  <a href="#d23" class="map-pin" style="left:72%;top:62%;"><span class="pin-tip">D23.</span>D23</a>
+  <a href="#d24" class="map-pin" style="left:56%;top:48%;"><span class="pin-tip">D24.</span>D24</a>
+  <a href="#d25" class="map-pin" style="left:82%;top:72%;"><span class="pin-tip">D25.</span>D25</a>
+  <a href="#d26" class="map-pin" style="left:85%;top:60%;"><span class="pin-tip">D26.</span>D26</a>
+  <a href="#d27" class="map-pin" style="left:78%;top:48%;"><span class="pin-tip">D27.</span>D27</a>
+  <a href="#d28" class="map-pin" style="left:88%;top:38%;"><span class="pin-tip">D28.</span>D28</a>
+  <a href="#d29" class="map-pin" style="left:58%;top:32%;"><span class="pin-tip">D29.</span>D29</a>
+  <a href="#d30" class="map-pin" style="left:68%;top:46%;"><span class="pin-tip">D30.</span>D30</a>
+  <a href="#d31" class="map-pin" style="left:78%;top:38%;"><span class="pin-tip">D31.</span>D31</a>
+  <a href="#d32" class="map-pin" style="left:72%;top:28%;"><span class="pin-tip">D32.</span>D32</a>
+  <a href="#d33" class="map-pin" style="left:52%;top:22%;"><span class="pin-tip">D33.</span>D33</a>
+</div>
+
   </div>
 </div>
 
@@ -964,7 +1059,7 @@ function toggleSidebar() {
 
 <p>이 방은 D3 구역과 같은 방식으로 꾸며져 있으며, 추가로 북쪽 벽에 비밀문이 있다. 북쪽 벽을 수색하여 DC 10 지혜(감지) 판정에 성공한 캐릭터가 비밀문을 발견한다. 밀면 안쪽으로 열린다. 비밀문을 여는 순간 악취 나는 하수구 냄새가 밀려온다. 문 너머의 계단은 매끄러운 돌 계단과 벽돌 벽으로 이루어져 있으며, 20피트 아래 D5 구역으로 내려간다. 벽 등잔에 꽂힌 두 개의 타오르는 횃불이 계단을 비추지만, 아래의 지하 감옥은 어둡다.</p>
 
-<div class="map-container">
+<div class="map-container" style="position:relative;">
   <div class="map-title">지도 1.3: 죽은 삼신의 지하 감옥(Dungeon of the Dead Three)</div>
   <div style="position:relative;">
     <img src="map-01.003-dungeon-dead-three.jpg" alt="지도 1.3: 죽은 삼신의 지하 감옥(Dungeon of the Dead Three)" style="width:100%;display:block;">
@@ -1360,10 +1455,21 @@ function toggleSidebar() {
 
 <p>암릭 반탐푸르(Amrik Vanthampur)는 라라엘라의 동의하에 낮은 등불에서 자기 사업을 운영한다. 그를 찾는 캐릭터들은 L6 구역으로 안내받는다.</p>
 
-<div class="map-container">
+<div class="map-container" style="position:relative;">
   <div class="map-title">지도 1.4: 낮은 등불(The Low Lantern)</div>
   <div style="position:relative;">
     <img src="map-01.004-the-low-lantern.jpg" alt="지도 1.4: 낮은 등불(The Low Lantern)" style="width:100%;display:block;">
+<div class="map-overlay">
+  <a href="#l1" class="map-pin" style="left:14%;top:48%;"><span class="pin-tip">L1. 상갑판</span>L1</a>
+  <a href="#l2" class="map-pin" style="left:12%;top:72%;"><span class="pin-tip">L2. 선수루</span>L2</a>
+  <a href="#l3" class="map-pin" style="left:14%;top:26%;"><span class="pin-tip">L3. 선미루</span>L3</a>
+  <a href="#l4" class="map-pin" style="left:38%;top:24%;"><span class="pin-tip">L4. 라라엘라의 선실</span>L4</a>
+  <a href="#l5" class="map-pin" style="left:38%;top:58%;"><span class="pin-tip">L5. 선술집/도박장</span>L5</a>
+  <a href="#l6" class="map-pin" style="left:58%;top:52%;"><span class="pin-tip">L6. 라운지</span>L6</a>
+  <a href="#l7" class="map-pin" style="left:82%;top:30%;"><span class="pin-tip">L7. 객실</span>L7</a>
+  <a href="#l8" class="map-pin" style="left:82%;top:52%;"><span class="pin-tip">L8. 숙소</span>L8</a>
+</div>
+
   </div>
 </div>
 
@@ -1371,7 +1477,7 @@ function toggleSidebar() {
 
 <p>아래 구역 설명은 지도 1.4에 맞춰져 있다.</p>
 
-<div class="map-container">
+<div class="map-container" style="position:relative;">
   <div class="map-title">지도 1.4: 낮은 등불호</div>
   <div style="position:relative;">
     <img src="map-01.004-the-low-lantern.jpg" alt="지도 1.4: 낮은 등불호" style="width:100%;display:block;">
@@ -1527,10 +1633,32 @@ function toggleSidebar() {
 
 <div class="section-divider">* * *</div>
 
-<div class="map-container">
+<div class="map-container" style="position:relative;">
   <div class="map-title">지도 1.5: 반탐푸르 저택</div>
   <div style="position:relative;">
     <img src="map-01.005-Vanthampur-Villa.jpg" alt="지도 1.5: 반탐푸르 저택" style="width:100%;display:block;">
+<div class="map-overlay">
+  <a href="#v1" class="map-pin" style="left:22%;top:52%;"><span class="pin-tip">V1. 마당</span>V1</a>
+  <a href="#v2" class="map-pin" style="left:4%;top:14%;"><span class="pin-tip">V2. 마구간</span>V2</a>
+  <a href="#v3" class="map-pin" style="left:26%;top:68%;"><span class="pin-tip">V3. 현관</span>V3</a>
+  <a href="#v4" class="map-pin" style="left:32%;top:74%;"><span class="pin-tip">V4. 하인 숙소</span>V4</a>
+  <a href="#v5" class="map-pin" style="left:22%;top:38%;"><span class="pin-tip">V5. 주방</span>V5</a>
+  <a href="#v6" class="map-pin" style="left:28%;top:48%;"><span class="pin-tip">V6. 식료품 저장고</span>V6</a>
+  <a href="#v7" class="map-pin" style="left:35%;top:30%;"><span class="pin-tip">V7. 계단</span>V7</a>
+  <a href="#v8" class="map-pin" style="left:18%;top:62%;"><span class="pin-tip">V8. 응접실</span>V8</a>
+  <a href="#v9" class="map-pin" style="left:16%;top:40%;"><span class="pin-tip">V9. 식당</span>V9</a>
+  <a href="#v10" class="map-pin" style="left:20%;top:48%;"><span class="pin-tip">V10. 갤러리</span>V10</a>
+  <a href="#v11" class="map-pin" style="left:60%;top:52%;"><span class="pin-tip">V11. 2층 복도</span>V11</a>
+  <a href="#v12" class="map-pin" style="left:65%;top:68%;"><span class="pin-tip">V12. 발코니</span>V12</a>
+  <a href="#v13" class="map-pin" style="left:56%;top:32%;"><span class="pin-tip">V13. 서스트웰의 침실</span>V13</a>
+  <a href="#v14" class="map-pin" style="left:58%;top:42%;"><span class="pin-tip">V14. 모틀록의 침실</span>V14</a>
+  <a href="#v15" class="map-pin" style="left:62%;top:42%;"><span class="pin-tip">V15. 암릭의 침실</span>V15</a>
+  <a href="#v16" class="map-pin" style="left:75%;top:58%;"><span class="pin-tip">V16. 공작의 화장실</span>V16</a>
+  <a href="#v17" class="map-pin" style="left:72%;top:44%;"><span class="pin-tip">V17. 주인 침실</span>V17</a>
+  <a href="#v18" class="map-pin" style="left:78%;top:52%;"><span class="pin-tip">V18. 공작의 서재</span>V18</a>
+  <a href="#v19" class="map-pin" style="left:82%;top:14%;"><span class="pin-tip">V19. 탑</span>V19</a>
+</div>
+
   </div>
 </div>
 
@@ -1793,10 +1921,30 @@ function toggleSidebar() {
 
 <h2>저택 지하(Under the Villa)</h2>
 
-<div class="map-container">
+<div class="map-container" style="position:relative;">
   <div class="map-title">지도 1.6: 저택 지하</div>
   <div style="position:relative;">
     <img src="map-01.006-Under-the-Villa.jpg" alt="지도 1.6: 저택 지하" style="width:100%;display:block;">
+<div class="map-overlay">
+  <a href="#v20" class="map-pin" style="left:62%;top:42%;"><span class="pin-tip">V20. 지하실</span>V20</a>
+  <a href="#v21" class="map-pin" style="left:50%;top:44%;"><span class="pin-tip">V21. 와인 저장고</span>V21</a>
+  <a href="#v22" class="map-pin" style="left:48%;top:22%;"><span class="pin-tip">V22. 하수도</span>V22</a>
+  <a href="#v23" class="map-pin" style="left:72%;top:16%;"><span class="pin-tip">V23. 냉동 저장고</span>V23</a>
+  <a href="#v24" class="map-pin" style="left:55%;top:16%;"><span class="pin-tip">V24. 식당</span>V24</a>
+  <a href="#v25" class="map-pin" style="left:46%;top:14%;"><span class="pin-tip">V25. 주방</span>V25</a>
+  <a href="#v26" class="map-pin" style="left:48%;top:38%;"><span class="pin-tip">V26. 자리엘 성소</span>V26</a>
+  <a href="#v27" class="map-pin" style="left:38%;top:38%;"><span class="pin-tip">V27. 탈출 통로</span>V27</a>
+  <a href="#v28" class="map-pin" style="left:45%;top:55%;"><span class="pin-tip">V28. 비밀 성소</span>V28</a>
+  <a href="#v29" class="map-pin" style="left:75%;top:62%;"><span class="pin-tip">V29. 감옥</span>V29</a>
+  <a href="#v30" class="map-pin" style="left:52%;top:72%;"><span class="pin-tip">V30. 쇠창살</span>V30</a>
+  <a href="#v31" class="map-pin" style="left:32%;top:45%;"><span class="pin-tip">V31. 제의실</span>V31</a>
+  <a href="#v32" class="map-pin" style="left:26%;top:40%;"><span class="pin-tip">V32. 연결 통로</span>V32</a>
+  <a href="#v33" class="map-pin" style="left:20%;top:32%;"><span class="pin-tip">V33. 교단원 숙소</span>V33</a>
+  <a href="#v34" class="map-pin" style="left:22%;top:48%;"><span class="pin-tip">V34. 의식의 방</span>V34</a>
+  <a href="#v35" class="map-pin" style="left:18%;top:18%;"><span class="pin-tip">V35. 크리그의 방</span>V35</a>
+  <a href="#v36" class="map-pin" style="left:40%;top:72%;"><span class="pin-tip">V36. 반탐푸르 금고</span>V36</a>
+</div>
+
   </div>
 </div>
 
@@ -1822,7 +1970,7 @@ function toggleSidebar() {
 
 <p>검은 로브를 입은 인간 사이비교도(cultist) 쌍들이 향로를 들고 복도를 행진하며, 그렇지 않으면 약간 메스꺼운 악취에 맞서기 위해 끊임없이 하수도에 향을 피운다.</p>
 
-<div class="map-container">
+<div class="map-container" style="position:relative;">
   <div class="map-title">지도 1.6: 저택 지하</div>
   <div style="position:relative;">
     <img src="map-01.006-Under-the-Villa.jpg" alt="지도 1.6: 저택 지하" style="width:100%;display:block;">
